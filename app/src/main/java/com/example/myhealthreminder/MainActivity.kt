@@ -5,6 +5,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,5 +18,47 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // 1- RecyclerView
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        // 2- Data source: List of ReminderModel Objects
+        var remindersList: ArrayList<ReminderModel> = ArrayList()
+
+        var reminder1 = ReminderModel(R.drawable.pill_symbol, "Reminder 1", "Mon", "9:00", "Active")
+        var reminder2 =
+            ReminderModel(R.drawable.pill_symbol, "Reminder 2", "Mon | Tue", "9:00", "Active")
+        var reminder3 = ReminderModel(
+            R.drawable.pill_symbol,
+            "Reminder 3",
+            "Mon | Sat",
+            "12:00 | 6:00",
+            "Inactive"
+        )
+        var reminder4 = ReminderModel(
+            R.drawable.pill_symbol,
+            "Reminder 4",
+            "Fri | Sun",
+            "9:00 | 11:00 | 1:00",
+            "Active"
+        )
+        var reminder5 = ReminderModel(
+            R.drawable.pill_symbol,
+            "Reminder 5",
+            "Wed | Thu",
+            "6:00 | 12:00 | 18:00 | 0:00",
+            "inactive"
+        )
+
+        remindersList.add(reminder1)
+        remindersList.add(reminder2)
+        remindersList.add(reminder3)
+        remindersList.add(reminder4)
+        remindersList.add(reminder5)
+
+        // 3- Adapter
+        val adapter = RemindersAdapter(remindersList)
+        recyclerView.adapter = adapter
     }
 }
