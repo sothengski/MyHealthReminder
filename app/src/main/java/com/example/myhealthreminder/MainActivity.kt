@@ -60,5 +60,39 @@ class MainActivity : AppCompatActivity() {
         // 3- Adapter
         val adapter = RemindersAdapter(remindersList)
         recyclerView.adapter = adapter
+
+        filterRecyclerView()
+    }
+
+    fun filterRecyclerView() {
+        // 1- RecyclerView
+        val filterRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
+        filterRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        // 2- Data source: List of ReminderModel Objects
+        var filtersList: ArrayList<FilterModel> = ArrayList()
+
+        var filter1 = FilterModel(1, "Monday",true)
+        var filter2 = FilterModel(2, "Tuesday",false)
+        var filter3 = FilterModel(3, "Wednesday",false)
+        var filter4 = FilterModel(4, "Thursday",false)
+        var filter5 = FilterModel(5, "Friday",false)
+        var filter6 = FilterModel(6, "Saturday",false)
+        var filter7 = FilterModel(7, "Sunday",false)
+
+
+        filtersList.add(filter1)
+        filtersList.add(filter2)
+        filtersList.add(filter3)
+        filtersList.add(filter4)
+        filtersList.add(filter5)
+        filtersList.add(filter6)
+        filtersList.add(filter7)
+
+
+        // 3- Adapter
+        val adapter = FiltersAdapter(filtersList)
+        filterRecyclerView.adapter = adapter
     }
 }
