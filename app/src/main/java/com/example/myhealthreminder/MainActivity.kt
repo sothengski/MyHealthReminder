@@ -26,29 +26,29 @@ class MainActivity : AppCompatActivity() {
         // 2- Data source: List of ReminderModel Objects
         var remindersList: ArrayList<ReminderModel> = ArrayList()
 
-        var reminder1 = ReminderModel(R.drawable.pill_symbol, "Reminder 1", "Mon", "9:00", "Active")
+        var reminder1 = ReminderModel(R.drawable.pill_symbol, "Reminder 1", "Mon", "9:00", true)
         var reminder2 =
-            ReminderModel(R.drawable.pill_symbol, "Reminder 2", "Mon | Tue", "9:00", "Active")
+            ReminderModel(R.drawable.pill_symbol, "Reminder 2", "Mon | Tue", "9:00", true)
         var reminder3 = ReminderModel(
             R.drawable.pill_symbol,
             "Reminder 3",
             "Mon | Sat",
             "12:00 | 6:00",
-            "Inactive"
+            false
         )
         var reminder4 = ReminderModel(
             R.drawable.pill_symbol,
             "Reminder 4",
             "Fri | Sun",
             "9:00 | 11:00 | 1:00",
-            "Active"
+            false
         )
         var reminder5 = ReminderModel(
             R.drawable.pill_symbol,
             "Reminder 5",
             "Wed | Thu",
             "6:00 | 12:00 | 18:00 | 0:00",
-            "inactive"
+            false
         )
 
         remindersList.add(reminder1)

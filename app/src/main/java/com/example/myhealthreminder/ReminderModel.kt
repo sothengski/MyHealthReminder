@@ -5,5 +5,5 @@ data class ReminderModel(
     val reminderName: String,
     val reminderDays: String,
     val reminderTimes: String,
-    val reminderStatus: String
+    val reminderStatus: Boolean
 )

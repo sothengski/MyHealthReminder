@@ -1,11 +1,13 @@
 package com.example.myhealthreminder
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
@@ -56,6 +58,9 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
         holder.reminderName.setText(remindersList[position].reminderName)
         holder.reminderDays.setText(remindersList[position].reminderDays)
         holder.reminderTimes.setText(remindersList[position].reminderTimes)
-        holder.reminderStatus.setText(remindersList[position].reminderStatus)
+        holder.reminderStatus.setText(if (remindersList[position].reminderStatus) "Active" else "Inactive")
+        holder.reminderStatus.setTextColor(if (remindersList[position].reminderStatus) Color.BLACK else Color.WHITE)
+        holder.reminderStatus.setBackgroundResource(if (remindersList[position].reminderStatus) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
+
     }
 }
