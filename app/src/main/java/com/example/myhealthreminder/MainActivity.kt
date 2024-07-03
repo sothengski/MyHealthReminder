@@ -1,20 +1,23 @@
 package com.example.myhealthreminder
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myhealthreminder.Adapters.FiltersAdapter
+import com.example.myhealthreminder.Adapters.RemindersAdapter
+import com.example.myhealthreminder.Models.FilterModel
+import com.example.myhealthreminder.Models.ReminderModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.img)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -32,29 +35,55 @@ class MainActivity : AppCompatActivity() {
         // 2- Data source: List of ReminderModel Objects
         var remindersList: ArrayList<ReminderModel> = ArrayList()
 
-        var reminder1 = ReminderModel(R.drawable.pill_symbol, "Reminder 1", "Mon", "9:00", true)
-        var reminder2 =
-            ReminderModel(R.drawable.pill_symbol, "Reminder 2", "Mon | Tue", "9:00", true)
+        var reminder1 = ReminderModel(
+            1, "Reminder 1", "Reminder 1 Description", true, R.drawable.pill_symbol,
+            "2",
+            "150mg",
+            "Mon | Tue | Wed",
+            "9:00 | 12:00 | 18:00",
+            300,
+            "piano",
+        )
+
+        var reminder2 = ReminderModel(
+            2, "Reminder 2", "Reminder 2 Description", true, R.drawable.pill_symbol,
+            "1",
+            "50mg",
+            "Mon ",
+            "12:00 | 18:00",
+            300,
+            "piano",
+        )
+
         var reminder3 = ReminderModel(
-            R.drawable.pill_symbol,
-            "Reminder 3",
-            "Mon | Sat",
-            "12:00 | 6:00",
-            false
+            3, "Reminder 3", "Reminder 3 Description", true, R.drawable.pill_symbol,
+            "3",
+            "100mg",
+            "Thu | Fri",
+            "12:00 | 18:00",
+            300,
+            "piano",
         )
+
         var reminder4 = ReminderModel(
-            R.drawable.pill_symbol,
-            "Reminder 4",
-            "Fri | Sun",
-            "9:00 | 11:00 | 1:00",
-            false
+            4, "Reminder 4", "Reminder 4 Description", true, R.drawable.pill_symbol,
+            "3",
+            "100mg",
+            "Sat | Sun",
+            "6:00 | 12:00 | 18:00",
+            300,
+            "piano",
         )
+
+
         var reminder5 = ReminderModel(
-            R.drawable.pill_symbol,
-            "Reminder 5",
-            "Wed | Thu",
-            "6:00 | 12:00 | 18:00 | 0:00",
-            false
+            5, "Reminder 5", "Reminder 5 Description", true, R.drawable.pill_symbol,
+            "5",
+            "75mg",
+            "Sun",
+            "12:00",
+            300,
+            "piano",
         )
 
         remindersList.add(reminder1)

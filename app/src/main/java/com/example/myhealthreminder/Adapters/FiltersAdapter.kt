@@ -1,4 +1,4 @@
-package com.example.myhealthreminder
+package com.example.myhealthreminder.Adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.color.MaterialColors
+import com.example.myhealthreminder.Models.FilterModel
+import com.example.myhealthreminder.R
 
 class FiltersAdapter(val filtersList: ArrayList<FilterModel>) :
     RecyclerView.Adapter<FiltersAdapter.MyViewHolder>() {

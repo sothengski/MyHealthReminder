@@ -1,16 +1,17 @@
-package com.example.myhealthreminder
+package com.example.myhealthreminder.Adapters
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myhealthreminder.DetailActivity
+import com.example.myhealthreminder.Models.ReminderModel
+import com.example.myhealthreminder.R
 
 class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
     RecyclerView.Adapter<RemindersAdapter.MyViewHolder>() {
@@ -35,7 +36,7 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
             itemView.setOnClickListener() {
                 Toast.makeText(
                     itemView.context,
-                    "You Clicked: ${remindersList[adapterPosition].reminderName}",
+                    "You Clicked: ${remindersList[adapterPosition].title}",
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -43,8 +44,8 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
                 val intent = Intent(itemView.context, DetailActivity::class.java)
 
                 // Pass data to DetailActivity
-                intent.putExtra("image", remindersList[adapterPosition].reminderImg)
-                intent.putExtra("title", remindersList[adapterPosition].reminderName)
+                intent.putExtra("image", remindersList[adapterPosition].img)
+                intent.putExtra("title", remindersList[adapterPosition].title)
                 intent.putExtra("description", remindersList[adapterPosition].reminderDays)
                 itemView.context.startActivity(intent)
             }
@@ -65,13 +66,13 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
-        holder.reminderImg.setImageResource(remindersList[position].reminderImg)
-        holder.reminderName.setText(remindersList[position].reminderName)
+        holder.reminderImg.setImageResource(remindersList[position].img)
+        holder.reminderName.setText(remindersList[position].title)
         holder.reminderDays.setText(remindersList[position].reminderDays)
         holder.reminderTimes.setText(remindersList[position].reminderTimes)
-        holder.reminderStatus.setText(if (remindersList[position].reminderStatus) "Active" else "Inactive")
-        holder.reminderStatus.setTextColor(if (remindersList[position].reminderStatus) Color.BLACK else Color.WHITE)
-        holder.reminderStatus.setBackgroundResource(if (remindersList[position].reminderStatus) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
+        holder.reminderStatus.setText(if (remindersList[position].status) "Active" else "Inactive")
+        holder.reminderStatus.setTextColor(if (remindersList[position].status) Color.BLACK else Color.WHITE)
+        holder.reminderStatus.setBackgroundResource(if (remindersList[position].status) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
 
     }
 }

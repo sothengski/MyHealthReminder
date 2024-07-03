@@ -4,8 +4,8 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <!-- Primary brand color -->
-        <item name="colorPrimary">@color/primary_light</item>
-        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorPrimary">@color/primaryLight</item>
+        <item name="colorPrimaryVariant">@color/primaryDark</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color -->
         <item name="colorSecondary">@color/accent</item>
@@ -26,7 +26,7 @@
 
     <style name="otherButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/primary_light</item>
+        <item name="android:textColor">@color/primaryLight</item>
         <item name="cornerRadius">10dp</item>
     </style>
 </resources>
