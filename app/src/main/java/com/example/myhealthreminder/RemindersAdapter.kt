@@ -1,6 +1,8 @@
 package com.example.myhealthreminder
 
+import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,8 +36,17 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
                 Toast.makeText(
                     itemView.context,
                     "You Clicked: ${remindersList[adapterPosition].reminderName}",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
+
+                // Navigate to DetailActivity
+                val intent = Intent(itemView.context, DetailActivity::class.java)
+
+                // Pass data to DetailActivity
+                intent.putExtra("image", remindersList[adapterPosition].reminderImg)
+                intent.putExtra("title", remindersList[adapterPosition].reminderName)
+                intent.putExtra("description", remindersList[adapterPosition].reminderDays)
+                itemView.context.startActivity(intent)
             }
         }
     }

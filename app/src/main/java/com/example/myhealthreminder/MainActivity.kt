@@ -1,6 +1,7 @@
 package com.example.myhealthreminder
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        reminderRecyclerView()
+        filterRecyclerView()
+    }
+
+    fun reminderRecyclerView() {
         // 1- RecyclerView
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -60,8 +66,6 @@ class MainActivity : AppCompatActivity() {
         // 3- Adapter
         val adapter = RemindersAdapter(remindersList)
         recyclerView.adapter = adapter
-
-        filterRecyclerView()
     }
 
     fun filterRecyclerView() {
@@ -73,13 +77,13 @@ class MainActivity : AppCompatActivity() {
         // 2- Data source: List of ReminderModel Objects
         var filtersList: ArrayList<FilterModel> = ArrayList()
 
-        var filter1 = FilterModel(1, "Monday",true)
-        var filter2 = FilterModel(2, "Tuesday",false)
-        var filter3 = FilterModel(3, "Wednesday",false)
-        var filter4 = FilterModel(4, "Thursday",false)
-        var filter5 = FilterModel(5, "Friday",false)
-        var filter6 = FilterModel(6, "Saturday",false)
-        var filter7 = FilterModel(7, "Sunday",false)
+        var filter1 = FilterModel(1, "Monday", true)
+        var filter2 = FilterModel(2, "Tuesday", false)
+        var filter3 = FilterModel(3, "Wednesday", false)
+        var filter4 = FilterModel(4, "Thursday", false)
+        var filter5 = FilterModel(5, "Friday", false)
+        var filter6 = FilterModel(6, "Saturday", false)
+        var filter7 = FilterModel(7, "Sunday", false)
 
 
         filtersList.add(filter1)
@@ -89,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         filtersList.add(filter5)
         filtersList.add(filter6)
         filtersList.add(filter7)
-
 
         // 3- Adapter
         val adapter = FiltersAdapter(filtersList)
