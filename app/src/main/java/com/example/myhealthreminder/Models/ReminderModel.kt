@@ -10,6 +10,7 @@ data class ReminderModel(
     val capSize: String,
     val reminderDays: String,
     val reminderTimes: String,
+    val foodAndPills: String,
     val snoozeDuration: Int,
     val reminderSound: String
 )

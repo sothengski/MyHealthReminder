@@ -22,6 +22,7 @@ class DetailActivity : AppCompatActivity() {
 
         // enable the back button in the navigation bar
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.title = "Detail"
 
         val imageView: ImageView = findViewById(R.id.imageView);
         val dTitle: TextView = findViewById(R.id.dTitle);

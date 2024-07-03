@@ -1,5 +1,6 @@
 package com.example.myhealthreminder
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,13 +12,14 @@ import com.example.myhealthreminder.Adapters.FiltersAdapter
 import com.example.myhealthreminder.Adapters.RemindersAdapter
 import com.example.myhealthreminder.Models.FilterModel
 import com.example.myhealthreminder.Models.ReminderModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.img)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -25,6 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         reminderRecyclerView()
         filterRecyclerView()
+
+        val fab: FloatingActionButton = findViewById(R.id.fab);
+        fab.setOnClickListener() {
+            // Navigate to CreateActivity
+            val intent = Intent(this, CreateActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun reminderRecyclerView() {
@@ -36,11 +45,12 @@ class MainActivity : AppCompatActivity() {
         var remindersList: ArrayList<ReminderModel> = ArrayList()
 
         var reminder1 = ReminderModel(
-            1, "Reminder 1", "Reminder 1 Description", true, R.drawable.pill_symbol,
+            1, "Reminder 1", "Reminder 1 Description", false, R.drawable.pill_symbol,
             "2",
             "150mg",
             "Mon | Tue | Wed",
             "9:00 | 12:00 | 18:00",
+            "Before Meals",
             300,
             "piano",
         )
@@ -51,26 +61,29 @@ class MainActivity : AppCompatActivity() {
             "50mg",
             "Mon ",
             "12:00 | 18:00",
+            "After Meals",
             300,
             "piano",
         )
 
         var reminder3 = ReminderModel(
-            3, "Reminder 3", "Reminder 3 Description", true, R.drawable.pill_symbol,
+            3, "Reminder 3", "Reminder 3 Description", false, R.drawable.pill_symbol,
             "3",
             "100mg",
             "Thu | Fri",
-            "12:00 | 18:00",
+            "18:00",
+            "After Dinner",
             300,
             "piano",
         )
 
         var reminder4 = ReminderModel(
-            4, "Reminder 4", "Reminder 4 Description", true, R.drawable.pill_symbol,
+            4, "Reminder 4", "Reminder 4 Description", false, R.drawable.pill_symbol,
             "3",
             "100mg",
             "Sat | Sun",
             "6:00 | 12:00 | 18:00",
+            "During meals",
             300,
             "piano",
         )
@@ -81,7 +94,8 @@ class MainActivity : AppCompatActivity() {
             "5",
             "75mg",
             "Sun",
-            "12:00",
+            "7:00",
+            "After Breakfast",
             300,
             "piano",
         )
