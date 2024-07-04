@@ -1,4 +1,4 @@
-package com.example.myhealthreminder.Models
+package com.example.myhealthreminder.models
 
 data class ReminderModel(
     var id: Int = 1,

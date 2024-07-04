@@ -1,18 +1,17 @@
-package com.example.myhealthreminder.Adapters
+package com.example.myhealthreminder.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhealthreminder.Models.FilterModel
+import com.example.myhealthreminder.models.FilterModel
 import com.example.myhealthreminder.R
 
-class FiltersAdapter(val filtersList: ArrayList<FilterModel>) :
+class FiltersAdapter(private val filtersList: ArrayList<FilterModel>) :
     RecyclerView.Adapter<FiltersAdapter.MyViewHolder>() {
     // ViewHolder: Holds references to the views within each item in the recyclerView
     private var listener: OnItemClickListener? = null
@@ -33,11 +32,11 @@ class FiltersAdapter(val filtersList: ArrayList<FilterModel>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
-        var filterData: FilterModel = filtersList[position]
+        val filterData: FilterModel = filtersList[position]
         holder.bindItems(filterData)
 
         // Set click listener for the card view
-        holder.itemView.setOnClickListener(View.OnClickListener {
+        holder.itemView.setOnClickListener {
             Toast.makeText(
                 holder.itemView.context,
                 "You Clicked: ${filterData.filterName}",
@@ -51,7 +50,7 @@ class FiltersAdapter(val filtersList: ArrayList<FilterModel>) :
 //            if (listener != null) {
 //                listener!!.onItemClick(filterData, position)
 //            }
-        })
+        }
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -62,7 +61,7 @@ class FiltersAdapter(val filtersList: ArrayList<FilterModel>) :
             filterName.text = filterData.filterName
 
             filterCard.setCardBackgroundColor(if (filterData.filterStatus) Color.DKGRAY else Color.WHITE)
-            filterName.setText(filterData.filterName)
+            filterName.text = filterData.filterName
             filterName.setTextColor(if (filterData.filterStatus) Color.WHITE else Color.BLACK)
         }
     }

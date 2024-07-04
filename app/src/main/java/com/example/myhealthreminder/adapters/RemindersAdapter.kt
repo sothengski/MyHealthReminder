@@ -1,4 +1,4 @@
-package com.example.myhealthreminder.Adapters
+package com.example.myhealthreminder.adapters
 
 import android.content.Intent
 import android.graphics.Color
@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.DetailActivity
-import com.example.myhealthreminder.Models.ReminderModel
+import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.R
 
 class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
@@ -19,21 +19,16 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
     // ViewHolder: Holds references to the views within
     // each item in the recyclerView
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var reminderImg: ImageView
-        var reminderName: TextView
-        var reminderDays: TextView
-        var reminderTimes: TextView
-        var reminderStatus: TextView
+        var reminderImg: ImageView = itemView.findViewById(R.id.item_image)
+        var reminderName: TextView = itemView.findViewById(R.id.item_name)
+        var reminderDays: TextView = itemView.findViewById(R.id.item_days)
+        var reminderTimes: TextView = itemView.findViewById(R.id.item_times)
+        var reminderStatus: TextView = itemView.findViewById(R.id.item_status)
 
         init {
-            reminderImg = itemView.findViewById(R.id.item_image)
-            reminderName = itemView.findViewById(R.id.item_name)
-            reminderDays = itemView.findViewById(R.id.item_days)
-            reminderTimes = itemView.findViewById(R.id.item_times)
-            reminderStatus = itemView.findViewById(R.id.item_status)
 
             // Handling the click events on cardViews
-            itemView.setOnClickListener() {
+            itemView.setOnClickListener {
                 Toast.makeText(
                     itemView.context,
                     "You Clicked: ${remindersList[adapterPosition].title}",
@@ -69,10 +64,10 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
         // Bind data to views based on the item at the specified position
 //        holder.reminderImg.setImageResource(remindersList[position].img)
         holder.reminderImg.setImageResource(R.drawable.pill_symbol)
-        holder.reminderName.setText(remindersList[position].title)
-        holder.reminderDays.setText(remindersList[position].reminderDays)
-        holder.reminderTimes.setText(remindersList[position].reminderTimes)
-        holder.reminderStatus.setText(if (remindersList[position].status == 1) "Active" else "Inactive")
+        holder.reminderName.text = remindersList[position].title
+        holder.reminderDays.text = remindersList[position].reminderDays
+        holder.reminderTimes.text = remindersList[position].reminderTimes
+        holder.reminderStatus.text = if (remindersList[position].status == 1) "Active" else "Inactive"
         holder.reminderStatus.setTextColor(if (remindersList[position].status == 1) Color.BLACK else Color.WHITE)
         holder.reminderStatus.setBackgroundResource(if (remindersList[position].status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
     }

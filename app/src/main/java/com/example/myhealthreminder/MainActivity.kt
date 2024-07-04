@@ -1,5 +1,6 @@
 package com.example.myhealthreminder
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -8,11 +9,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhealthreminder.Adapters.FiltersAdapter
-import com.example.myhealthreminder.Adapters.RemindersAdapter
-import com.example.myhealthreminder.Models.FilterModel
-import com.example.myhealthreminder.Models.ReminderModel
-import com.example.myhealthreminder.Utils.DataBaseHelper
+import com.example.myhealthreminder.adapters.FiltersAdapter
+import com.example.myhealthreminder.adapters.RemindersAdapter
+import com.example.myhealthreminder.models.FilterModel
+import com.example.myhealthreminder.models.ReminderModel
+import com.example.myhealthreminder.utils.DataBaseHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -50,14 +51,15 @@ class MainActivity : AppCompatActivity() {
 //        reminderRecyclerView()
 
         // Floating Action Button
-        val fab: FloatingActionButton = findViewById(R.id.fab);
-        fab.setOnClickListener() {
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
             // Navigate to CreateActivity
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         if (myAdapter != null) {
@@ -86,9 +88,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         // 2- Data source: List of ReminderModel Objects
-        var remindersList: ArrayList<ReminderModel> = ArrayList()
+        val remindersList: ArrayList<ReminderModel> = ArrayList()
 
-        var reminder1 = ReminderModel(
+        val reminder1 = ReminderModel(
             1, "Reminder 1", "Reminder 1 Description", 0, "Dose",
 //            (R.drawable.pill_symbol),
             "",
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             "piano", ""
         )
 
-        var reminder2 = ReminderModel(
+        val reminder2 = ReminderModel(
             2, "Reminder 2", "Reminder 2 Description", 1, "Drop",
 //            (R.drawable.pill_symbol),
             "", "1",
@@ -113,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             "piano", ""
         )
 
-        var reminder3 = ReminderModel(
+        val reminder3 = ReminderModel(
             3, "Reminder 3", "Reminder 3 Description", 0, "Tablet",
 //            (R.drawable.pill_symbol),
             "", "3",
@@ -125,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             "piano", ""
         )
 
-        var reminder4 = ReminderModel(
+        val reminder4 = ReminderModel(
             4, "Reminder 4", "Reminder 4 Description", 0, "Dose",
 //            (R.drawable.pill_symbol),
             "", "3",
@@ -138,8 +140,8 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        var reminder5 = ReminderModel(
-            5, "Reminder 5", "Reminder 5 Description", 1, "Enject",
+        val reminder5 = ReminderModel(
+            5, "Reminder 5", "Reminder 5 Description", 1, "Inject",
 //            (R.drawable.pill_symbol),
             "", "5",
             "75mg",
@@ -162,22 +164,22 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    fun filterRecyclerView() {
+    private fun filterRecyclerView() {
         // 1- RecyclerView
         val filterRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
         filterRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // 2- Data source: List of ReminderModel Objects
-        var filtersList: ArrayList<FilterModel> = ArrayList()
+        val filtersList: ArrayList<FilterModel> = ArrayList()
 
-        var filter1 = FilterModel(1, "Monday", true)
-        var filter2 = FilterModel(2, "Tuesday", false)
-        var filter3 = FilterModel(3, "Wednesday", false)
-        var filter4 = FilterModel(4, "Thursday", false)
-        var filter5 = FilterModel(5, "Friday", false)
-        var filter6 = FilterModel(6, "Saturday", false)
-        var filter7 = FilterModel(7, "Sunday", false)
+        val filter1 = FilterModel(1, "Monday", true)
+        val filter2 = FilterModel(2, "Tuesday", false)
+        val filter3 = FilterModel(3, "Wednesday", false)
+        val filter4 = FilterModel(4, "Thursday", false)
+        val filter5 = FilterModel(5, "Friday", false)
+        val filter6 = FilterModel(6, "Saturday", false)
+        val filter7 = FilterModel(7, "Sunday", false)
 
 
         filtersList.add(filter1)

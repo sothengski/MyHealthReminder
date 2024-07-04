@@ -1,6 +1,5 @@
 package com.example.myhealthreminder
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -11,10 +10,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhealthreminder.Adapters.FiltersAdapter
-import com.example.myhealthreminder.Models.FilterModel
-import com.example.myhealthreminder.Models.ReminderModel
-import com.example.myhealthreminder.Utils.DataBaseHelper
+import com.example.myhealthreminder.adapters.FiltersAdapter
+import com.example.myhealthreminder.models.FilterModel
+import com.example.myhealthreminder.models.ReminderModel
+import com.example.myhealthreminder.utils.DataBaseHelper
 
 class CreateActivity : AppCompatActivity() {
 
@@ -70,8 +69,8 @@ class CreateActivity : AppCompatActivity() {
 
         filterRecyclerView()
 
-        val createBtn: Button = findViewById(R.id.cCreateBtn);
-        createBtn.setOnClickListener() {
+        val createBtn: Button = findViewById(R.id.cCreateBtn)
+        createBtn.setOnClickListener {
             // Get data from EditText
             val title = cTitleInput.text.toString()
             val description = cDescriptionInput.text.toString()
@@ -119,7 +118,7 @@ class CreateActivity : AppCompatActivity() {
 //        }
 //    }
 
-    fun filterRecyclerView() {
+    private fun filterRecyclerView() {
         // 1- RecyclerView
         val filterRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
         filterRecyclerView.layoutManager =

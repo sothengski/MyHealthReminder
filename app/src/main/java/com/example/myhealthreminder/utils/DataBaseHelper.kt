@@ -1,4 +1,4 @@
-package com.example.myhealthreminder.Utils
+package com.example.myhealthreminder.utils
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,10 +6,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import android.widget.Toast
-import com.example.myhealthreminder.Models.ReminderModel
+import com.example.myhealthreminder.models.ReminderModel
 
-public class DataBaseHelper(
+class DataBaseHelper(
     context: Context?,
     name: String?,
     factory: SQLiteDatabase.CursorFactory?,
@@ -20,8 +19,8 @@ public class DataBaseHelper(
 //    private var db: SQLiteDatabase = writableDatabase
 
     companion object {
-        private val DATABASE_VERSION = 1  // Database Version
-        private val DATABASE_NAME = "reminder_db" // Database Name
+        private const val DATABASE_VERSION = 1  // Database Version
+        private const val DATABASE_NAME = "reminder_db" // Database Name
     }
 
     // Database Table Name
@@ -67,7 +66,7 @@ public class DataBaseHelper(
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db!!.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME) // Drop older table if existed
+        db!!.execSQL("DROP TABLE IF EXISTS $TABLE_NAME") // Drop older table if existed
         onCreate(db)  // Create tables again
     }
 
@@ -184,14 +183,14 @@ public class DataBaseHelper(
         db.beginTransaction()
         try {
 //            cursor = db.query(TABLE_NAME, null, null, null, null, null, null)
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 do {
                     // declare a Reminder variable
 //                    val reminder = ReminderModel()
 //                    reminder.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)))
 
                     val reminder1 = ReminderModel(
-                        cursor!!.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS)),
