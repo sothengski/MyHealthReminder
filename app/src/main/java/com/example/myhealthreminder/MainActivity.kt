@@ -47,59 +47,66 @@ class MainActivity : AppCompatActivity() {
         var remindersList: ArrayList<ReminderModel> = ArrayList()
 
         var reminder1 = ReminderModel(
-            1, "Reminder 1", "Reminder 1 Description", false, R.drawable.pill_symbol,
+            1, "Reminder 1", "Reminder 1 Description", 0, "Dose",
+//            (R.drawable.pill_symbol),
+            "",
             "2",
             "150mg",
             "Mon | Tue | Wed",
             "9:00 | 12:00 | 18:00",
             "Before Meals",
             300,
-            "piano",
+            "piano", ""
         )
 
         var reminder2 = ReminderModel(
-            2, "Reminder 2", "Reminder 2 Description", true, R.drawable.pill_symbol,
-            "1",
+            2, "Reminder 2", "Reminder 2 Description", 1, "Drop",
+//            (R.drawable.pill_symbol),
+            "",            "1",
             "50mg",
             "Mon ",
             "12:00 | 18:00",
             "After Meals",
             300,
-            "piano",
+            "piano", ""
         )
 
         var reminder3 = ReminderModel(
-            3, "Reminder 3", "Reminder 3 Description", false, R.drawable.pill_symbol,
-            "3",
+            3, "Reminder 3", "Reminder 3 Description", 0, "Tablet",
+//            (R.drawable.pill_symbol),
+            "",            "3",
             "100mg",
             "Thu | Fri",
             "18:00",
             "After Dinner",
             300,
-            "piano",
+            "piano", ""
         )
 
         var reminder4 = ReminderModel(
-            4, "Reminder 4", "Reminder 4 Description", false, R.drawable.pill_symbol,
-            "3",
+            4, "Reminder 4", "Reminder 4 Description", 0, "Dose",
+//            (R.drawable.pill_symbol),
+            "",            "3",
             "100mg",
             "Sat | Sun",
             "6:00 | 12:00 | 18:00",
             "During meals",
             300,
-            "piano",
+            "piano", ""
         )
 
 
         var reminder5 = ReminderModel(
-            5, "Reminder 5", "Reminder 5 Description", true, R.drawable.pill_symbol,
-            "5",
+            5, "Reminder 5", "Reminder 5 Description", 1, "Enject",
+//            (R.drawable.pill_symbol),
+            "",            "5",
             "75mg",
             "Sun",
             "7:00",
             "After Breakfast",
             300,
             "piano",
+            ""
         )
 
         remindersList.add(reminder1)

@@ -44,7 +44,8 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
                 val intent = Intent(itemView.context, DetailActivity::class.java)
 
                 // Pass data to DetailActivity
-                intent.putExtra("image", remindersList[adapterPosition].img)
+//                intent.putExtra("image", remindersList[adapterPosition].img)
+                intent.putExtra("image", R.drawable.pill_symbol)
                 intent.putExtra("title", remindersList[adapterPosition].title)
                 intent.putExtra("description", remindersList[adapterPosition].reminderDays)
                 itemView.context.startActivity(intent)
@@ -66,13 +67,13 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
-        holder.reminderImg.setImageResource(remindersList[position].img)
+//        holder.reminderImg.setImageResource(remindersList[position].img)
+        holder.reminderImg.setImageResource(R.drawable.pill_symbol)
         holder.reminderName.setText(remindersList[position].title)
         holder.reminderDays.setText(remindersList[position].reminderDays)
         holder.reminderTimes.setText(remindersList[position].reminderTimes)
-        holder.reminderStatus.setText(if (remindersList[position].status) "Active" else "Inactive")
-        holder.reminderStatus.setTextColor(if (remindersList[position].status) Color.BLACK else Color.WHITE)
-        holder.reminderStatus.setBackgroundResource(if (remindersList[position].status) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
-
+        holder.reminderStatus.setText(if (remindersList[position].status == 1) "Active" else "Inactive")
+        holder.reminderStatus.setTextColor(if (remindersList[position].status == 1) Color.BLACK else Color.WHITE)
+        holder.reminderStatus.setBackgroundResource(if (remindersList[position].status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
     }
 }

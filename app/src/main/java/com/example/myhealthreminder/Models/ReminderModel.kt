@@ -1,16 +1,19 @@
 package com.example.myhealthreminder.Models
 
 data class ReminderModel(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val status: Boolean,
-    val img: Int,
-    val amount: String,
-    val capSize: String,
-    val reminderDays: String,
-    val reminderTimes: String,
-    val foodAndPills: String,
-    val snoozeDuration: Int,
-    val reminderSound: String
+    var id: Int = 1,
+    var title: String = "",
+    var description: String = "",
+    var status: Int = 0,
+    var type: String = "",
+    var img: String = "",
+    var amount: String = "",
+    var capSize: String = "",
+    var reminderDays: String = "",
+    var reminderTimes: String = "",
+    var foodAndPills: String = "",
+    var snoozeDuration: Int = 0,
+    var reminderSound: String = "",
+    var timestamp: String = ""
 )
+
