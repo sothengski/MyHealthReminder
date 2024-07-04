@@ -1,3 +1,3 @@
 package com.example.myhealthreminder.Models
 
-data class FilterModel(val filterId: Int, val filterName: String, val filterStatus: Boolean)
+data class FilterModel(val filterId: Int, var filterName: String, var filterStatus: Boolean)

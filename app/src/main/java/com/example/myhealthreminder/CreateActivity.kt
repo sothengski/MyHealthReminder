@@ -136,7 +136,6 @@ class CreateActivity : AppCompatActivity() {
         var filter6 = FilterModel(6, "Sat", false)
         var filter7 = FilterModel(7, "Sun", false)
 
-
         filtersList.add(filter1)
         filtersList.add(filter2)
         filtersList.add(filter3)
