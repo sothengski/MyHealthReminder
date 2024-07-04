@@ -12,9 +12,21 @@ import com.example.myhealthreminder.Adapters.FiltersAdapter
 import com.example.myhealthreminder.Adapters.RemindersAdapter
 import com.example.myhealthreminder.Models.FilterModel
 import com.example.myhealthreminder.Models.ReminderModel
+import com.example.myhealthreminder.Utils.DataBaseHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
+    private var TAG: String = "MainActivity"
+
+    private var remindersList: ArrayList<ReminderModel> = ArrayList()
+    private var filtersList: ArrayList<FilterModel> = ArrayList()
+    private var myAdapter: RemindersAdapter? = null
+    private var recyclerView: RecyclerView? = null
+
+    //    private var layoutManager: RecyclerView.LayoutManager? = null
+    private var dbHelper: DataBaseHelper? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,15 +39,45 @@ class MainActivity : AppCompatActivity() {
         // enable the back button in the navigation bar
         supportActionBar!!.hide()
 
-        reminderRecyclerView()
-        filterRecyclerView()
+        // Initialize DBHelper
+        dbHelper = DataBaseHelper(this, null, null, 1)
 
+        // Get all reminders from DB
+        getAllReminder()
+
+        // Filter RecyclerView
+        filterRecyclerView()
+//        reminderRecyclerView()
+
+        // Floating Action Button
         val fab: FloatingActionButton = findViewById(R.id.fab);
         fab.setOnClickListener() {
             // Navigate to CreateActivity
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (myAdapter != null) {
+            getAllReminder()
+            myAdapter!!.notifyDataSetChanged()
+        }
+    }
+
+    private fun getAllReminder() {
+        recyclerView = findViewById(R.id.recyclerView)
+
+        // Get all reminders from DB
+        remindersList = dbHelper!!.getAllReminders() as ArrayList<ReminderModel>
+
+        myAdapter = RemindersAdapter(remindersList) // Initialize Adapter
+
+        recyclerView!!.setHasFixedSize(true) // Use fixed size
+        recyclerView!!.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView!!.adapter = myAdapter // Set Adapter
     }
 
     fun reminderRecyclerView() {
@@ -62,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         var reminder2 = ReminderModel(
             2, "Reminder 2", "Reminder 2 Description", 1, "Drop",
 //            (R.drawable.pill_symbol),
-            "",            "1",
+            "", "1",
             "50mg",
             "Mon ",
             "12:00 | 18:00",
@@ -74,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         var reminder3 = ReminderModel(
             3, "Reminder 3", "Reminder 3 Description", 0, "Tablet",
 //            (R.drawable.pill_symbol),
-            "",            "3",
+            "", "3",
             "100mg",
             "Thu | Fri",
             "18:00",
@@ -86,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         var reminder4 = ReminderModel(
             4, "Reminder 4", "Reminder 4 Description", 0, "Dose",
 //            (R.drawable.pill_symbol),
-            "",            "3",
+            "", "3",
             "100mg",
             "Sat | Sun",
             "6:00 | 12:00 | 18:00",
@@ -99,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         var reminder5 = ReminderModel(
             5, "Reminder 5", "Reminder 5 Description", 1, "Enject",
 //            (R.drawable.pill_symbol),
-            "",            "5",
+            "", "5",
             "75mg",
             "Sun",
             "7:00",

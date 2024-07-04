@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import android.widget.Toast
 import com.example.myhealthreminder.Models.ReminderModel
 
 public class DataBaseHelper(
@@ -231,8 +233,8 @@ public class DataBaseHelper(
                     reminders.add(reminder1)
                 } while (cursor.moveToNext())
             }
-            db.setTransactionSuccessful()
-            db.endTransaction()
+            Log.d("TAG", "getAllReminders: ${reminders.size}")
+//            db.setTransactionSuccessful()
             cursor.close()
             return reminders
         } finally {
