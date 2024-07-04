@@ -30,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
 
         // Get the data from the intent
         val bundle = intent.extras;
-        if (bundle != null){
+        if (bundle != null) {
             // Get the data from the intent
             imageView.setImageResource(bundle.getInt("image"))
             dTitle.setText(bundle.getString("title"))

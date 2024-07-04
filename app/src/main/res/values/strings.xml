@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">My Health Reminder</string>
     <string name="create_new_reminder">Create New Reminder</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="snooze_duration">Snooze Duration</string>
+    <string name="minutes">Minutes</string>
+    <string name="snooze_duration_minutes">Snooze Duration (Minutes)</string>
+    <string name="medicine_name">Medicine Name</string>
+    <string name="enter_medicine_name">Enter Medicine Name</string>
+    <string name="medicine_description">Medicine Description</string>
+    <string name="enter_medecine_description">Enter Medecine Description</string>
+    <string name="days">Days</string>
+    <string name="times">Times</string>
+    <string name="sound">Sound</string>
+
 </resources>

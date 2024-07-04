@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // enable the back button in the navigation bar
+        supportActionBar!!.hide()
 
         reminderRecyclerView()
         filterRecyclerView()
