@@ -90,7 +90,5 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
         onItemClickListener = listener
         // Set click listener for the card view
         Log.d("TAG", "clickListener: ")
-
     }
-
 }

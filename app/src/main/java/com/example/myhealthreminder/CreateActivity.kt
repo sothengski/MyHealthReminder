@@ -1,6 +1,7 @@
 package com.example.myhealthreminder
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -32,9 +33,10 @@ class CreateActivity : AppCompatActivity() {
 //    private var layoutManager: RecyclerView.LayoutManager? = null
 
     private var dbHelper: DataBaseHelper? = null
+    var daysList: ArrayList<DayModel> = ArrayList()
 
-//    private var reminder = ArrayList<ReminderModel>()
-
+    //    private var reminder = ArrayList<ReminderModel>()
+    var daysSelected = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -65,7 +67,7 @@ class CreateActivity : AppCompatActivity() {
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
 
-        filterRecyclerView()
+        daysRecyclerView()
 
         val createBtn: Button = findViewById(R.id.cCreateBtn)
         createBtn.setOnClickListener {
@@ -73,29 +75,56 @@ class CreateActivity : AppCompatActivity() {
             val title = cTitleInput.text.toString()
             val description = cDescriptionInput.text.toString()
             val status = 1
-            Toast.makeText(this, "title: $title, description: $description", Toast.LENGTH_SHORT)
-                .show()
-            if (title.isEmpty() || description.isEmpty()) {
+//            Toast.makeText(this, "title: $title, description: $description", Toast.LENGTH_SHORT).show()
+            // arrayList of DayModel Object
+            val daysSelectedList: ArrayList<DayModel> = ArrayList()
+            // remove days from daysSelectedList if
+            for (day in daysList) {
+                if (day.status) {
+//                    Toast.makeText(this, "day: ${day.title}", Toast.LENGTH_SHORT).show()
+                    daysSelectedList.add(day)
+                }
+                // else remove it
+                else {
+                    daysSelectedList.remove(day)
+                }
+            }
+             daysSelected = ""
+            //  daysSelectedList by title and separate by comma
+            for (day in daysSelectedList) {
+                // add days to daysSelected
+                 daysSelected = daysSelected.plus("${day.title}, ")
+            }
+            // remove last comma from daysSelected
+            daysSelected = daysSelected.dropLast(2)
+
+//            Log.d(TAG, "daysSelected: ${daysSelected}")
+
+//            Log.d(TAG, "daysSelectedList: $daysSelectedList")
+
+            if (title.isEmpty() || description.isEmpty() || daysSelectedList.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
-            // Create a Reminder object
-            val reminder = ReminderModel(
-                title = title,
-                description = description,
-                status = status
-            )
-            // Insert Reminder to DB
-            val responseId: Long = dbHelper!!.insertReminder(reminder)
-            // Show Toast
-            Toast.makeText(this, "Response ID: $responseId", Toast.LENGTH_SHORT).show()
-
-            if (responseId != -1L) {
-                Toast.makeText(this, "Reminder Created", Toast.LENGTH_SHORT).show()
-                // Pop
-                finish()
             } else {
-                Toast.makeText(this, "Reminder Not Created", Toast.LENGTH_SHORT).show()
+                // Create a Reminder object
+                val reminder = ReminderModel(
+                    title = title,
+                    description = description,
+                    status = status,
+                    reminderDays = daysSelected,
+                )
+                // Insert Reminder to DB
+                val responseId: Long = dbHelper!!.insertReminder(reminder)
+                // Show Toast
+//            Toast.makeText(this, "Response ID: $responseId", Toast.LENGTH_SHORT).show()
+
+                if (responseId != -1L) {
+                    Toast.makeText(this, "Reminder Created", Toast.LENGTH_SHORT).show()
+                    // Pop
+                    finish()
+                } else {
+                    Toast.makeText(this, "Reminder Not Created", Toast.LENGTH_SHORT).show()
+                }
             }
 
             // Navigate to MainActivity
@@ -116,14 +145,13 @@ class CreateActivity : AppCompatActivity() {
 //        }
 //    }
 
-    private fun filterRecyclerView() {
+    private fun daysRecyclerView() {
         // 1- RecyclerView
-        val filterRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
-        filterRecyclerView.layoutManager =
+        val daysRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
+        daysRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        // 2- Data source: List of ReminderModel Objects
-        var filtersList: ArrayList<DayModel> = ArrayList()
+        // 2- Data source: List of ReminderModel Object
 
         var filter1 = DayModel(1, "Mon", true)
         var filter2 = DayModel(2, "Tue", false)
@@ -133,16 +161,16 @@ class CreateActivity : AppCompatActivity() {
         var filter6 = DayModel(6, "Sat", false)
         var filter7 = DayModel(7, "Sun", false)
 
-        filtersList.add(filter1)
-        filtersList.add(filter2)
-        filtersList.add(filter3)
-        filtersList.add(filter4)
-        filtersList.add(filter5)
-        filtersList.add(filter6)
-        filtersList.add(filter7)
+        daysList.add(filter1)
+        daysList.add(filter2)
+        daysList.add(filter3)
+        daysList.add(filter4)
+        daysList.add(filter5)
+        daysList.add(filter6)
+        daysList.add(filter7)
 
         // 3- Adapter
-        val adapter = DaysAdapter(filtersList)
-        filterRecyclerView.adapter = adapter
+        val adapter = DaysAdapter(daysList)
+        daysRecyclerView.adapter = adapter
     }
 }
