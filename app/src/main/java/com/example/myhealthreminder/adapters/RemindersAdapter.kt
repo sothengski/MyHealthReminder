@@ -2,6 +2,7 @@ package com.example.myhealthreminder.adapters
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,31 +20,40 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
     // ViewHolder: Holds references to the views within
     // each item in the recyclerView
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var reminderImg: ImageView = itemView.findViewById(R.id.item_image)
-        var reminderName: TextView = itemView.findViewById(R.id.item_name)
-        var reminderDays: TextView = itemView.findViewById(R.id.item_days)
-        var reminderTimes: TextView = itemView.findViewById(R.id.item_times)
-        var reminderStatus: TextView = itemView.findViewById(R.id.item_status)
+        fun bind(reminder: ReminderModel) {
+            val reminderImg: ImageView = itemView.findViewById<ImageView>(R.id.item_image)
+            val reminderName: TextView = itemView.findViewById<TextView>(R.id.item_name)
+            val reminderDays: TextView = itemView.findViewById<TextView>(R.id.item_days)
+            val reminderTimes: TextView = itemView.findViewById<TextView>(R.id.item_times)
+            val reminderStatus: TextView = itemView.findViewById<TextView>(R.id.item_status)
 
-        init {
-
-            // Handling the click events on cardViews
+            reminderImg.setImageResource(R.drawable.pill_symbol)
+            reminderName.text = reminder.title
+            reminderDays.text = reminder.reminderDays
+            reminderTimes.text = reminder.reminderTimes
+            reminderStatus.text = if (reminder.status == 1) "Active" else "Inactive"
+            reminderStatus.setTextColor(if (reminder.status == 1) Color.BLACK else Color.WHITE)
+            reminderStatus.setBackgroundResource(if (reminder.status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
+            // Set click listener for the card view
             itemView.setOnClickListener {
                 Toast.makeText(
                     itemView.context,
-                    "You Clicked: ${remindersList[adapterPosition].title}",
+                    "You Clicked: ${reminder.title}",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // Navigate to DetailActivity
-                val intent = Intent(itemView.context, DetailActivity::class.java)
-
-                // Pass data to DetailActivity
-//                intent.putExtra("image", remindersList[adapterPosition].img)
-                intent.putExtra("image", R.drawable.pill_symbol)
-                intent.putExtra("title", remindersList[adapterPosition].title)
-                intent.putExtra("description", remindersList[adapterPosition].reminderDays)
+                val intent = Intent(itemView.context, DetailActivity::class.java).apply {
+                    putExtra("image", R.drawable.pill_symbol)
+                    putExtra("reminderData", reminder)
+                }
                 itemView.context.startActivity(intent)
+//                onItemClickListener?.let { it1 -> it1(reminder.title) }
+//                Toast.makeText(
+//                    itemView.context,
+//                    "You Clicked: ${reminder.title}",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
             }
         }
     }
@@ -62,13 +72,25 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
+        holder.bind(remindersList[position])
+        // Bind data to views based on the item at the specified position
 //        holder.reminderImg.setImageResource(remindersList[position].img)
-        holder.reminderImg.setImageResource(R.drawable.pill_symbol)
-        holder.reminderName.text = remindersList[position].title
-        holder.reminderDays.text = remindersList[position].reminderDays
-        holder.reminderTimes.text = remindersList[position].reminderTimes
-        holder.reminderStatus.text = if (remindersList[position].status == 1) "Active" else "Inactive"
-        holder.reminderStatus.setTextColor(if (remindersList[position].status == 1) Color.BLACK else Color.WHITE)
-        holder.reminderStatus.setBackgroundResource(if (remindersList[position].status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
+//        holder.reminderImg.setImageResource(R.drawable.pill_symbol)
+//        holder.reminderName.text = remindersList[position].title
+//        holder.reminderDays.text = remindersList[position].reminderDays
+//        holder.reminderTimes.text = remindersList[position].reminderTimes
+//        holder.reminderStatus.text = if (remindersList[position].status == 1) "Active" else "Inactive"
+//        holder.reminderStatus.setTextColor(if (remindersList[position].status == 1) Color.BLACK else Color.WHITE)
+//        holder.reminderStatus.setBackgroundResource(if (remindersList[position].status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
     }
+
+
+    private var onItemClickListener: ((String) -> Unit)? = null
+    fun setOnItemClickListener(listener: (String) -> Unit) {
+        onItemClickListener = listener
+        // Set click listener for the card view
+        Log.d("TAG", "clickListener: ")
+
+    }
+
 }

@@ -9,9 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhealthreminder.adapters.FiltersAdapter
+import com.example.myhealthreminder.adapters.DaysAdapter
 import com.example.myhealthreminder.adapters.RemindersAdapter
-import com.example.myhealthreminder.models.FilterModel
+import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.utils.DataBaseHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var TAG: String = "MainActivity"
 
     private var remindersList: ArrayList<ReminderModel> = ArrayList()
-    private var filtersList: ArrayList<FilterModel> = ArrayList()
+    private var daysList: ArrayList<DayModel> = ArrayList()
     private var myAdapter: RemindersAdapter? = null
     private var recyclerView: RecyclerView? = null
 
@@ -171,15 +171,15 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // 2- Data source: List of ReminderModel Objects
-        val filtersList: ArrayList<FilterModel> = ArrayList()
+        val filtersList: ArrayList<DayModel> = ArrayList()
 
-        val filter1 = FilterModel(1, "Monday", true)
-        val filter2 = FilterModel(2, "Tuesday", false)
-        val filter3 = FilterModel(3, "Wednesday", false)
-        val filter4 = FilterModel(4, "Thursday", false)
-        val filter5 = FilterModel(5, "Friday", false)
-        val filter6 = FilterModel(6, "Saturday", false)
-        val filter7 = FilterModel(7, "Sunday", false)
+        val filter1 = DayModel(1, "Monday", true)
+        val filter2 = DayModel(2, "Tuesday", false)
+        val filter3 = DayModel(3, "Wednesday", false)
+        val filter4 = DayModel(4, "Thursday", false)
+        val filter5 = DayModel(5, "Friday", false)
+        val filter6 = DayModel(6, "Saturday", false)
+        val filter7 = DayModel(7, "Sunday", false)
 
 
         filtersList.add(filter1)
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
         filtersList.add(filter7)
 
         // 3- Adapter
-        val adapter = FiltersAdapter(filtersList)
+        val adapter = DaysAdapter(filtersList)
         filterRecyclerView.adapter = adapter
     }
 }

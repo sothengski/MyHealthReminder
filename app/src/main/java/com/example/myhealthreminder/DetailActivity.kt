@@ -1,12 +1,14 @@
 package com.example.myhealthreminder
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myhealthreminder.models.ReminderModel
 
 class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,17 +26,20 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = "Detail"
 
-        val imageView: ImageView = findViewById(R.id.imageView);
-        val dTitle: TextView = findViewById(R.id.dTitle);
-        val dDescription: TextView = findViewById(R.id.dDescription);
+        val imageView: ImageView = findViewById(R.id.imageView)
+        val dTitle: TextView = findViewById(R.id.dTitle)
+        val dDescription: TextView = findViewById(R.id.dDescription)
 
         // Get the data from the intent
-        val bundle = intent.extras;
+        val intent = intent
+        val bundle = intent.extras
+        val reminderData = intent.getSerializableExtra("reminderData") as ReminderModel
+
         if (bundle != null) {
             // Get the data from the intent
             imageView.setImageResource(bundle.getInt("image"))
-            dTitle.setText(bundle.getString("title"))
-            dDescription.setText(bundle.getString("description"))
+            dTitle.text = (reminderData.title)
+            dDescription.text = (reminderData.description)
         }
     }
 }

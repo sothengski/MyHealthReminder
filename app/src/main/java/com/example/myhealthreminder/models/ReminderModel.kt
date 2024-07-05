@@ -1,5 +1,7 @@
 package com.example.myhealthreminder.models
 
+import java.io.Serializable
+
 data class ReminderModel(
     var id: Int = 1,
     var title: String = "",
@@ -15,5 +17,5 @@ data class ReminderModel(
     var snoozeDuration: Int = 0,
     var reminderSound: String = "",
     var timestamp: String = ""
-)
+): Serializable
 

@@ -8,11 +8,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhealthreminder.models.FilterModel
+import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.R
 
-class FiltersAdapter(private val filtersList: ArrayList<FilterModel>) :
-    RecyclerView.Adapter<FiltersAdapter.MyViewHolder>() {
+class DaysAdapter(private val filtersList: ArrayList<DayModel>) :
+    RecyclerView.Adapter<DaysAdapter.MyViewHolder>() {
     // ViewHolder: Holds references to the views within each item in the recyclerView
     private var listener: OnItemClickListener? = null
 
@@ -22,7 +22,7 @@ class FiltersAdapter(private val filtersList: ArrayList<FilterModel>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.filter_card_layout, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.day_card_layout, parent, false)
         return MyViewHolder(v)
     }
 
@@ -32,19 +32,19 @@ class FiltersAdapter(private val filtersList: ArrayList<FilterModel>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
-        val filterData: FilterModel = filtersList[position]
+        val filterData: DayModel = filtersList[position]
         holder.bindItems(filterData)
 
         // Set click listener for the card view
         holder.itemView.setOnClickListener {
             Toast.makeText(
                 holder.itemView.context,
-                "You Clicked: ${filterData.filterName}",
+                "You Clicked: ${filterData.title}",
                 Toast.LENGTH_SHORT
             ).show()
             // Handle the click event here
             // For example, you can update the filter status and notify the adapter
-            filterData.filterStatus = !filterData.filterStatus
+            filterData.status = !filterData.status
             notifyDataSetChanged()
 
 //            if (listener != null) {
@@ -53,21 +53,21 @@ class FiltersAdapter(private val filtersList: ArrayList<FilterModel>) :
         }
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(filterData: FilterModel) {
+   inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindItems(filterData: DayModel) {
             val filterCard = itemView.findViewById<CardView>(R.id.filter_card)
             val filterName = itemView.findViewById<TextView>(R.id.txtv_day)
 //            filterCard.text = filterData.filterName
-            filterName.text = filterData.filterName
+            filterName.text = filterData.title
 
-            filterCard.setCardBackgroundColor(if (filterData.filterStatus) Color.DKGRAY else Color.WHITE)
-            filterName.text = filterData.filterName
-            filterName.setTextColor(if (filterData.filterStatus) Color.WHITE else Color.BLACK)
+            filterCard.setCardBackgroundColor(if (filterData.status) Color.DKGRAY else Color.WHITE)
+            filterName.text = filterData.title
+            filterName.setTextColor(if (filterData.status) Color.WHITE else Color.BLACK)
         }
     }
 
     // Create an interface to handle click events
     interface OnItemClickListener {
-        fun onItemClick(filterData: FilterModel?, position: Int)
+        fun onItemClick(filterData: DayModel?, position: Int)
     }
 }

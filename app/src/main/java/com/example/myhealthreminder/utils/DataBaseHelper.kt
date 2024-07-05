@@ -120,7 +120,8 @@ class DataBaseHelper(
             TABLE_NAME,
             contentValues,
             "$COLUMN_ID=?",
-            arrayOf(reminder.id.toString())) // Insert Row
+            arrayOf(reminder.id.toString())
+        ) // Insert Row
 
         db.close() // Close database connection
         return success
@@ -206,7 +207,7 @@ class DataBaseHelper(
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP))
                     )
 
-                    reminder1.id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)).also { reminder1.id = it }
                     reminder1.title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
                     reminder1.description =
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))

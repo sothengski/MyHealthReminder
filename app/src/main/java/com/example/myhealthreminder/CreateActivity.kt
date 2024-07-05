@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myhealthreminder.adapters.FiltersAdapter
-import com.example.myhealthreminder.models.FilterModel
+import com.example.myhealthreminder.adapters.DaysAdapter
+import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.utils.DataBaseHelper
 
@@ -50,7 +50,6 @@ class CreateActivity : AppCompatActivity() {
         supportActionBar!!.title = getString(R.string.add_reminder)
 //        supportActionBar!!.setHomeAsUpIndicator(R.drawable.back_arrow)
 
-
         val cTitleInput: EditText = findViewById(R.id.cTitleInput)
         val cDescriptionInput: EditText = findViewById(R.id.cDescriptionInput)
 //        val cTypeInput: EditText = findViewById(R.id.cTypeInput)
@@ -65,7 +64,6 @@ class CreateActivity : AppCompatActivity() {
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
-
 
         filterRecyclerView()
 
@@ -125,15 +123,15 @@ class CreateActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // 2- Data source: List of ReminderModel Objects
-        var filtersList: ArrayList<FilterModel> = ArrayList()
+        var filtersList: ArrayList<DayModel> = ArrayList()
 
-        var filter1 = FilterModel(1, "Mon", true)
-        var filter2 = FilterModel(2, "Tue", false)
-        var filter3 = FilterModel(3, "Wed", false)
-        var filter4 = FilterModel(4, "Thu", false)
-        var filter5 = FilterModel(5, "Fri", false)
-        var filter6 = FilterModel(6, "Sat", false)
-        var filter7 = FilterModel(7, "Sun", false)
+        var filter1 = DayModel(1, "Mon", true)
+        var filter2 = DayModel(2, "Tue", false)
+        var filter3 = DayModel(3, "Wed", false)
+        var filter4 = DayModel(4, "Thu", false)
+        var filter5 = DayModel(5, "Fri", false)
+        var filter6 = DayModel(6, "Sat", false)
+        var filter7 = DayModel(7, "Sun", false)
 
         filtersList.add(filter1)
         filtersList.add(filter2)
@@ -144,7 +142,7 @@ class CreateActivity : AppCompatActivity() {
         filtersList.add(filter7)
 
         // 3- Adapter
-        val adapter = FiltersAdapter(filtersList)
+        val adapter = DaysAdapter(filtersList)
         filterRecyclerView.adapter = adapter
     }
 }
