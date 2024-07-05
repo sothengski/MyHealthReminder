@@ -11,6 +11,7 @@
     <string name="enter_medecine_description">Enter Medecine Description</string>
     <string name="days">Days</string>
     <string name="times">Times</string>
+    <string name="time">Time</string>
     <string name="sound">Sound</string>
 
 </resources>

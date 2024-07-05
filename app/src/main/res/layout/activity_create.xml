@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/edit_text_border"
         android:hint="@string/enter_medicine_name"
@@ -97,45 +97,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/times"
+        android:layout_marginTop="32dp"
+        android:text="@string/time"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_filter" />
 
-    <TextView
-        android:id="@+id/cSnooze_DurationLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="45dp"
-        android:text="@string/snooze_duration_minutes"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cTimesLabel" />
-
-
-    <EditText
-        android:id="@+id/editTextNumberDecimal"
+    <Button
+        android:id="@+id/btnRemiderTime"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="46dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/edit_text_border"
-        android:ems="10"
-        android:gravity="center"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        android:minHeight="48dp"
-        android:paddingStart="8dp"
+        android:background="@drawable/button_bg"
+        android:backgroundTint="@color/primaryLight"
+        android:elevation="4dp"
+        android:text="Pick Time"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cSnooze_DurationLabel"
-        app:layout_constraintTop_toBottomOf="@+id/cTimesLabel" />
+        app:layout_constraintStart_toEndOf="@+id/cTimesLabel"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_filter" />
 
     <Button
         android:id="@+id/cCreateBtn"

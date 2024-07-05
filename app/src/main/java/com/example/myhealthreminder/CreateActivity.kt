@@ -1,5 +1,7 @@
 package com.example.myhealthreminder
 
+import android.app.TimePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -54,6 +56,7 @@ class CreateActivity : AppCompatActivity() {
 
         val cTitleInput: EditText = findViewById(R.id.cTitleInput)
         val cDescriptionInput: EditText = findViewById(R.id.cDescriptionInput)
+        val btnRemiderTime: Button = findViewById(R.id.btnRemiderTime)
 //        val cTypeInput: EditText = findViewById(R.id.cTypeInput)
 //        val cAmountInput: EditText = findViewById(R.id.cAmountInput)
 //        val cCapSizeInput: EditText = findViewById(R.id.cCapSizeInput)
@@ -70,14 +73,41 @@ class CreateActivity : AppCompatActivity() {
         daysRecyclerView()
 
         val createBtn: Button = findViewById(R.id.cCreateBtn)
+
+        // Set click listener for the button
+        btnRemiderTime.setOnClickListener {
+//            Toast.makeText(this, "Pick Time", Toast.LENGTH_SHORT).show()
+            val cal = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+                btnRemiderTime.text = String.format("%02d:%02d", hour, minute)
+            }
+            TimePickerDialog(
+                this,
+                timeSetListener,
+                cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),
+                true
+            ).show()
+        }
+
         createBtn.setOnClickListener {
             // Get data from EditText
             val title = cTitleInput.text.toString()
             val description = cDescriptionInput.text.toString()
             val status = 1
-//            Toast.makeText(this, "title: $title, description: $description", Toast.LENGTH_SHORT).show()
             // arrayList of DayModel Object
             val daysSelectedList: ArrayList<DayModel> = ArrayList()
+            // if timepicker is empty and difference from TimeFormat, set it to ""
+           if (btnRemiderTime.text.toString().isEmpty() || btnRemiderTime.text.toString() == "Pick Time"){
+               btnRemiderTime.text = ""
+           }
+            else {
+                btnRemiderTime.text.toString()
+           }
+
+            val timepicker: String = btnRemiderTime.text.toString()
             // remove days from daysSelectedList if
             for (day in daysList) {
                 if (day.status) {
@@ -89,21 +119,21 @@ class CreateActivity : AppCompatActivity() {
                     daysSelectedList.remove(day)
                 }
             }
-             daysSelected = ""
+            daysSelected = ""
             //  daysSelectedList by title and separate by comma
             for (day in daysSelectedList) {
                 // add days to daysSelected
-                 daysSelected = daysSelected.plus("${day.title}, ")
+                daysSelected = daysSelected.plus("${day.title}, ")
             }
             // remove last comma from daysSelected
             daysSelected = daysSelected.dropLast(2)
 
-//            Log.d(TAG, "daysSelected: ${daysSelected}")
-
 //            Log.d(TAG, "daysSelectedList: $daysSelectedList")
+//            Log.d(TAG, "Pick Time: ${btnRemiderTime.text}")
 
-            if (title.isEmpty() || description.isEmpty() || daysSelectedList.isEmpty()) {
+            if (title.isEmpty() || description.isEmpty() || daysSelectedList.isEmpty() || timepicker.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                btnRemiderTime.text = "Pick Time"
                 return@setOnClickListener
             } else {
                 // Create a Reminder object
@@ -112,6 +142,7 @@ class CreateActivity : AppCompatActivity() {
                     description = description,
                     status = status,
                     reminderDays = daysSelected,
+                    reminderTimes = timepicker
                 )
                 // Insert Reminder to DB
                 val responseId: Long = dbHelper!!.insertReminder(reminder)
@@ -126,6 +157,7 @@ class CreateActivity : AppCompatActivity() {
                     Toast.makeText(this, "Reminder Not Created", Toast.LENGTH_SHORT).show()
                 }
             }
+
 
             // Navigate to MainActivity
 //            val intent = Intent(this, MainActivity::class.java)
