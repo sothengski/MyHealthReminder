@@ -28,7 +28,9 @@ class DetailActivity : AppCompatActivity() {
 
         val imageView: ImageView = findViewById(R.id.imageView)
         val dTitle: TextView = findViewById(R.id.dTitle)
-        val dDescription: TextView = findViewById(R.id.dDescription)
+        val dDescription: TextView = findViewById(R.id.dDescriptionData)
+        val dDay: TextView = findViewById(R.id.dDayData)
+        val dTime: TextView = findViewById(R.id.dTimeData)
 
         // Get the data from the intent
         val intent = intent
@@ -40,6 +42,8 @@ class DetailActivity : AppCompatActivity() {
             imageView.setImageResource(bundle.getInt("image"))
             dTitle.text = (reminderData.title)
             dDescription.text = (reminderData.description)
+            dDay.text = (reminderData.reminderDays)
+            dTime.text = (reminderData.reminderTimes)
         }
     }
 }

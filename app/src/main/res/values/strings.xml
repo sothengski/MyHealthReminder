@@ -8,7 +8,7 @@
     <string name="medicine_name">Medicine Name</string>
     <string name="enter_medicine_name">Enter Medicine Name</string>
     <string name="medicine_description">Medicine Description</string>
-    <string name="enter_medecine_description">Enter Medecine Description</string>
+    <string name="enter_medicine_description">Enter Medicine Description</string>
     <string name="days">Days</string>
     <string name="times">Times</string>
     <string name="time">Time</string>
