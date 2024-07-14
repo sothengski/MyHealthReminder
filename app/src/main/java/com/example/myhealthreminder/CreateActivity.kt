@@ -1,6 +1,7 @@
 package com.example.myhealthreminder
 
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +29,10 @@ class CreateActivity : AppCompatActivity() {
 
     var daysSelected = ""
 
+    var isUpdate: Boolean = false
+
+    lateinit var reminderData: ReminderModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,19 +45,37 @@ class CreateActivity : AppCompatActivity() {
 
         // enable the back button in the navigation bar
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.title = getString(R.string.add_reminder)
 //        supportActionBar!!.setHomeAsUpIndicator(R.drawable.back_arrow)
 
         val cTitleInput: EditText = findViewById(R.id.cTitleInput)
         val cDescriptionInput: EditText = findViewById(R.id.cDescriptionInput)
         val btnRemiderTime: Button = findViewById(R.id.btnRemiderTime)
+        val createBtn: Button = findViewById(R.id.cCreateBtn)
+
+        // Get the data from the intent
+        val intent = intent
+        val bundle = intent.extras
+
+        if (bundle != null) {
+            reminderData = intent.getSerializableExtra("reminderData") as ReminderModel
+            isUpdate = true
+            // Get the data from the intent
+
+//            imageView.setImageResource(bundle.getInt("image"))
+            cTitleInput.setText(reminderData.title)
+            cDescriptionInput.setText(reminderData.description)
+
+            btnRemiderTime.text = reminderData.reminderTimes
+        }
+
+        supportActionBar!!.title =
+            if (isUpdate) getString(R.string.edit_reminder) else getString(R.string.add_reminder)
+        createBtn.text = if (isUpdate) "Edit Reminder ID: ${reminderData.id}" else "Add Reminder"
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
 
         daysRecyclerView()
-
-        val createBtn: Button = findViewById(R.id.cCreateBtn)
 
         // Set click listener for the button
         btnRemiderTime.setOnClickListener {
@@ -113,23 +137,42 @@ class CreateActivity : AppCompatActivity() {
                 btnRemiderTime.text = "Pick Time"
                 return@setOnClickListener
             } else {
-                // Create a Reminder object
-                val reminder = ReminderModel(
+                reminderData = ReminderModel(
+                    id = if (isUpdate) reminderData.id else 1,
                     title = title,
                     description = description,
                     status = status,
                     reminderDays = daysSelected,
                     reminderTimes = timepicker
                 )
-                // Insert Reminder to DB
-                val responseId: Long = dbHelper!!.insertReminder(reminder)
+                // Edit an existing Reminder Object
+                if (isUpdate) {
+                    val responseId: Int = dbHelper!!.updateReminder(reminderData)
+//                    Log.d("TAG", "responseId: ${responseId}")
+                    if (responseId > 0) {
+                        Toast.makeText(this, "Reminder Edit", Toast.LENGTH_SHORT).show()
+                        // Pop
+//                        finish()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "Reminder Can't Edit", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                // Create a Reminder object
+                else if (!isUpdate) {
 
-                if (responseId != -1L) {
-                    Toast.makeText(this, "Reminder Created", Toast.LENGTH_SHORT).show()
-                    // Pop
-                    finish()
-                } else {
-                    Toast.makeText(this, "Reminder Not Created", Toast.LENGTH_SHORT).show()
+                    // Insert Reminder to DB
+                    val responseId: Long = dbHelper!!.insertReminder(reminderData)
+
+                    if (responseId != -1L) {
+                        Toast.makeText(this, "Reminder Created", Toast.LENGTH_SHORT).show()
+                        // Pop
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Reminder Not Created", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

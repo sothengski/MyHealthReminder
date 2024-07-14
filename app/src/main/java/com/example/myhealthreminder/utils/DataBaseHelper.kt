@@ -89,23 +89,22 @@ class DataBaseHelper(
         val db =
             this.writableDatabase // Create and/or open a database that will be used for reading and writing.
         val contentValues =
-            ContentValues() // Create a new map of values, where column names are the keys
-        contentValues.put(COLUMN_TITLE, reminder.title)
-        contentValues.put(COLUMN_DESCRIPTION, reminder.description)
-        contentValues.put(COLUMN_STATUS, reminder.status)
-        contentValues.put(COLUMN_TYPE, reminder.type)
-        contentValues.put(COLUMN_IMAGE, reminder.img)
-        contentValues.put(COLUMN_DAYS, reminder.reminderDays)
-        contentValues.put(COLUMN_TIMES, reminder.reminderTimes)
-        contentValues.put(COLUMN_SNOOZE_DURATION, reminder.snoozeDuration)
+            ContentValues().apply {  // Create a new map of values, where column names are the keys
+                put(COLUMN_TITLE, reminder.title)
+                put(COLUMN_DESCRIPTION, reminder.description)
+                put(COLUMN_STATUS, reminder.status)
+                put(COLUMN_TYPE, reminder.type)
+                put(COLUMN_IMAGE, reminder.img)
+                put(COLUMN_DAYS, reminder.reminderDays)
+                put(COLUMN_TIMES, reminder.reminderTimes)
+                put(COLUMN_SNOOZE_DURATION, reminder.snoozeDuration)
+            }
 //        contentValues.put(COLUMN_TIMESTAMP, reminder.timestamp)
 
-        val success = db.update(
-            TABLE_NAME,
-            contentValues,
-            "$COLUMN_ID=?",
-            arrayOf(reminder.id.toString())
-        ) // Insert Row
+        val whereClause = "$COLUMN_ID = ?"//"$COLUMN_ID = ${reminder::id}"
+        val whereArgs = arrayOf(reminder.id.toString())
+
+        val success = db.update(TABLE_NAME, contentValues, whereClause, whereArgs) // Updating Row
 
         db.close() // Close database connection
         return success
@@ -183,7 +182,8 @@ class DataBaseHelper(
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP))
                     )
 
-                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)).also { reminder1.id = it }
+                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+                        .also { reminder1.id = it }
                     reminder1.title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
                     reminder1.description =
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))

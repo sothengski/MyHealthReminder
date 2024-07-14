@@ -2,7 +2,9 @@
     <string name="app_name">My Health Reminder</string>
     <string name="create_new_reminder">Create New Reminder</string>
     <string name="add_reminder">Add Reminder</string>
+    <string name="edit">Edit</string>
     <string name="edit_reminder">Edit Reminder</string>
+    <string name="delete">Delete</string>
     <string name="delete_reminder">Delete Reminder</string>
 
     <string name="snooze_duration">Snooze Duration</string>
@@ -16,5 +18,10 @@
     <string name="times">Times</string>
     <string name="time">Time</string>
     <string name="sound">Sound</string>
-
+    <string-array name="typeListing">
+        <item>Pill</item>
+        <item>Syringe</item>
+        <item>Drink</item>
+    </string-array>
+    <string name="spinner">Select Type</string>
 </resources>

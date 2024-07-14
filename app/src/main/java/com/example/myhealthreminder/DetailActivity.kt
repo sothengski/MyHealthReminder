@@ -1,11 +1,15 @@
 package com.example.myhealthreminder
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +21,7 @@ import com.example.myhealthreminder.utils.DataBaseHelper
 class DetailActivity : AppCompatActivity() {
     private var TAG = "DetailActivity"
     private var dbHelper: DataBaseHelper? = null
+    lateinit var reminderData: ReminderModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +36,6 @@ class DetailActivity : AppCompatActivity() {
 
         // enable the back button in the navigation bar
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.title = "Detail"
 
         val imageView: ImageView = findViewById(R.id.imageView)
         val dTitle: TextView = findViewById(R.id.dTitle)
@@ -43,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
         // Get the data from the intent
         val intent = intent
         val bundle = intent.extras
-        val reminderData = intent.getSerializableExtra("reminderData") as ReminderModel
+         reminderData = intent.getSerializableExtra("reminderData") as ReminderModel
 
         if (bundle != null) {
             // Get the data from the intent
@@ -53,11 +57,34 @@ class DetailActivity : AppCompatActivity() {
             dDay.text = (reminderData.reminderDays)
             dTime.text = (reminderData.reminderTimes)
         }
+
+        supportActionBar!!.title = "Detail ${reminderData.id}"
+
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
         dDeleteBtn.setOnClickListener {
             deleteConfirmation(reminderData)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menuEdit) {
+            val intent = Intent(this, CreateActivity::class.java).apply {
+                putExtra("reminderData", reminderData)
+            }
+            this.startActivity(intent)
+//            Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show()
+        } else if (item.itemId == R.id.menuDelete) {
+            deleteConfirmation(reminderData)
+//            Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show()
+        } else
+            return super.onOptionsItemSelected(item)
+        return true
     }
 
     private fun deleteConfirmation(reminderData: ReminderModel) {
