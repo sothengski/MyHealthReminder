@@ -22,23 +22,11 @@ class CreateActivity : AppCompatActivity() {
 
     private var TAG: String = "CreateActivity"
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        onBackPressed()
-//        return true
-//    }
-//    private var filtersList: ArrayList<FilterModel> = ArrayList()
-
-//    private var myAdapter: FiltersAdapter? = null
-
-//    private var recyclerView: RecyclerView? = null
-
-//    private var layoutManager: RecyclerView.LayoutManager? = null
-
     private var dbHelper: DataBaseHelper? = null
     var daysList: ArrayList<DayModel> = ArrayList()
 
-    //    private var reminder = ArrayList<ReminderModel>()
     var daysSelected = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,15 +45,6 @@ class CreateActivity : AppCompatActivity() {
         val cTitleInput: EditText = findViewById(R.id.cTitleInput)
         val cDescriptionInput: EditText = findViewById(R.id.cDescriptionInput)
         val btnRemiderTime: Button = findViewById(R.id.btnRemiderTime)
-//        val cTypeInput: EditText = findViewById(R.id.cTypeInput)
-//        val cAmountInput: EditText = findViewById(R.id.cAmountInput)
-//        val cCapSizeInput: EditText = findViewById(R.id.cCapSizeInput)
-//        val cDaysInput: EditText = findViewById(R.id.cDaysInput)
-//        val cTimesInput: EditText = findViewById(R.id.cTimesInput)
-//        val cMealInput: EditText = findViewById(R.id.cMealInput)
-//        val cSnoozeInput: EditText = findViewById(R.id.cSnoozeInput)
-//        val cSoundInput: EditText = findViewById(R.id.cSoundInput)
-
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
@@ -100,12 +79,13 @@ class CreateActivity : AppCompatActivity() {
             // arrayList of DayModel Object
             val daysSelectedList: ArrayList<DayModel> = ArrayList()
             // if timepicker is empty and difference from TimeFormat, set it to ""
-           if (btnRemiderTime.text.toString().isEmpty() || btnRemiderTime.text.toString() == "Pick Time"){
-               btnRemiderTime.text = ""
-           }
-            else {
+            if (btnRemiderTime.text.toString()
+                    .isEmpty() || btnRemiderTime.text.toString() == "Pick Time"
+            ) {
+                btnRemiderTime.text = ""
+            } else {
                 btnRemiderTime.text.toString()
-           }
+            }
 
             val timepicker: String = btnRemiderTime.text.toString()
             // remove days from daysSelectedList if
@@ -128,9 +108,6 @@ class CreateActivity : AppCompatActivity() {
             // remove last comma from daysSelected
             daysSelected = daysSelected.dropLast(2)
 
-//            Log.d(TAG, "daysSelectedList: $daysSelectedList")
-//            Log.d(TAG, "Pick Time: ${btnRemiderTime.text}")
-
             if (title.isEmpty() || description.isEmpty() || daysSelectedList.isEmpty() || timepicker.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 btnRemiderTime.text = "Pick Time"
@@ -146,8 +123,6 @@ class CreateActivity : AppCompatActivity() {
                 )
                 // Insert Reminder to DB
                 val responseId: Long = dbHelper!!.insertReminder(reminder)
-                // Show Toast
-//            Toast.makeText(this, "Response ID: $responseId", Toast.LENGTH_SHORT).show()
 
                 if (responseId != -1L) {
                     Toast.makeText(this, "Reminder Created", Toast.LENGTH_SHORT).show()
@@ -157,25 +132,8 @@ class CreateActivity : AppCompatActivity() {
                     Toast.makeText(this, "Reminder Not Created", Toast.LENGTH_SHORT).show()
                 }
             }
-
-
-            // Navigate to MainActivity
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
         }
     }
-
-    /**
-     * Inserting new reminder to in db and refreshing the list
-     */
-//    private fun createReminder(reminder: ReminderModel) {
-//        val id = dbHelper!!.insertReminder(reminder)    // inserting reminder in db and getting newly inserted reminder id
-//        val new = dbHelper!!.getReminder(id.toInt())  // get the newly inserted reminder from db
-//        if (new != null) {
-//            allReminders.add(0, new)    // adding new reminder to array list at 0 position
-//            myAdapter!!.notifyDataSetChanged()  // refreshing the list
-//        }
-//    }
 
     private fun daysRecyclerView() {
         // 1- RecyclerView
@@ -184,7 +142,6 @@ class CreateActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // 2- Data source: List of ReminderModel Object
-
         var filter1 = DayModel(1, "Mon", true)
         var filter2 = DayModel(2, "Tue", false)
         var filter3 = DayModel(3, "Wed", false)

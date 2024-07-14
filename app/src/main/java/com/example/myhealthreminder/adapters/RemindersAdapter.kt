@@ -21,11 +21,11 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
     // each item in the recyclerView
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(reminder: ReminderModel) {
-            val reminderImg: ImageView = itemView.findViewById<ImageView>(R.id.item_image)
-            val reminderName: TextView = itemView.findViewById<TextView>(R.id.item_name)
-            val reminderDays: TextView = itemView.findViewById<TextView>(R.id.item_days)
-            val reminderTimes: TextView = itemView.findViewById<TextView>(R.id.item_times)
-            val reminderStatus: TextView = itemView.findViewById<TextView>(R.id.item_status)
+            val reminderImg = itemView.findViewById<ImageView>(R.id.item_image)
+            val reminderName = itemView.findViewById<TextView>(R.id.item_name)
+            val reminderDays = itemView.findViewById<TextView>(R.id.item_days)
+            val reminderTimes = itemView.findViewById<TextView>(R.id.item_times)
+            val reminderStatus = itemView.findViewById<TextView>(R.id.item_status)
 
             reminderImg.setImageResource(R.drawable.pill_symbol)
             reminderName.text = reminder.title
@@ -36,24 +36,17 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
             reminderStatus.setBackgroundResource(if (reminder.status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
             // Set click listener for the card view
             itemView.setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    "You Clicked: ${reminder.title}",
-                    Toast.LENGTH_SHORT
-                ).show()
+//                Toast.makeText(
+//                    itemView.context,
+//                    "You Clicked: ${reminder.title}",
+//                    Toast.LENGTH_SHORT
+//                ).show()
 
                 val intent = Intent(itemView.context, DetailActivity::class.java).apply {
                     putExtra("image", R.drawable.pill_symbol)
                     putExtra("reminderData", reminder)
                 }
                 itemView.context.startActivity(intent)
-//                onItemClickListener?.let { it1 -> it1(reminder.title) }
-//                Toast.makeText(
-//                    itemView.context,
-//                    "You Clicked: ${reminder.title}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
             }
         }
     }
@@ -73,22 +66,12 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
         holder.bind(remindersList[position])
-        // Bind data to views based on the item at the specified position
-//        holder.reminderImg.setImageResource(remindersList[position].img)
-//        holder.reminderImg.setImageResource(R.drawable.pill_symbol)
-//        holder.reminderName.text = remindersList[position].title
-//        holder.reminderDays.text = remindersList[position].reminderDays
-//        holder.reminderTimes.text = remindersList[position].reminderTimes
-//        holder.reminderStatus.text = if (remindersList[position].status == 1) "Active" else "Inactive"
-//        holder.reminderStatus.setTextColor(if (remindersList[position].status == 1) Color.BLACK else Color.WHITE)
-//        holder.reminderStatus.setBackgroundResource(if (remindersList[position].status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
     }
 
 
     private var onItemClickListener: ((String) -> Unit)? = null
     fun setOnItemClickListener(listener: (String) -> Unit) {
         onItemClickListener = listener
-        // Set click listener for the card view
-        Log.d("TAG", "clickListener: ")
+//        Log.d("TAG", "clickListener: ")
     }
 }

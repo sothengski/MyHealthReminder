@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.R
 
-class DaysAdapter(private val filtersList: ArrayList<DayModel>) :
+class DaysAdapter(private val daysList: ArrayList<DayModel>) :
     RecyclerView.Adapter<DaysAdapter.MyViewHolder>() {
     // ViewHolder: Holds references to the views within each item in the recyclerView
     private var listener: OnItemClickListener? = null
@@ -27,23 +27,22 @@ class DaysAdapter(private val filtersList: ArrayList<DayModel>) :
     }
 
     override fun getItemCount(): Int {
-        return filtersList.size
+        return daysList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // Bind data to views based on the item at the specified position
-        val filterData: DayModel = filtersList[position]
+        val filterData: DayModel = daysList[position]
         holder.bindItems(filterData)
 
         // Set click listener for the card view
         holder.itemView.setOnClickListener {
-            Toast.makeText(
-                holder.itemView.context,
-                "You Clicked: ${filterData.title}",
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                holder.itemView.context,
+//                "You Clicked: ${filterData.title}",
+//                Toast.LENGTH_SHORT
+//            ).show()
             // Handle the click event here
-            // For example, you can update the filter status and notify the adapter
             filterData.status = !filterData.status
             notifyDataSetChanged()
 
@@ -53,7 +52,7 @@ class DaysAdapter(private val filtersList: ArrayList<DayModel>) :
         }
     }
 
-   inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(filterData: DayModel) {
             val filterCard = itemView.findViewById<CardView>(R.id.filter_card)
             val filterName = itemView.findViewById<TextView>(R.id.txtv_day)

@@ -33,13 +33,9 @@ class DataBaseHelper(
     private val COLUMN_STATUS = "status"
     private val COLUMN_TYPE = "type"
     private val COLUMN_IMAGE = "image"
-    private val COLUMN_AMOUNT = "amount"
-    private val COLUMN_CAP_SIZE = "cap_size"
     private val COLUMN_DAYS = "days"
     private val COLUMN_TIMES = "times"
-    private val COLUMN_MEAL = "meal"
     private val COLUMN_SNOOZE_DURATION = "snooze_duration"
-    private val COLUMN_SOUND = "sound"
     private val COLUMN_TIMESTAMP = "timestamp"
 
     // Create table SQL query
@@ -50,13 +46,9 @@ class DataBaseHelper(
                     + COLUMN_STATUS + " BOOLEAN,"
                     + COLUMN_TYPE + " TEXT,"
                     + COLUMN_IMAGE + " INTEGER,"
-                    + COLUMN_AMOUNT + " TEXT,"
-                    + COLUMN_CAP_SIZE + " TEXT,"
                     + COLUMN_DAYS + " TEXT,"
                     + COLUMN_TIMES + " TEXT,"
-                    + COLUMN_MEAL + " TEXT,"
                     + COLUMN_SNOOZE_DURATION + " INTEGER,"
-                    + COLUMN_SOUND + " TEXT,"
                     + COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
                     + ")")
 
@@ -83,13 +75,9 @@ class DataBaseHelper(
         contentValues.put(COLUMN_STATUS, reminder.status)
         contentValues.put(COLUMN_TYPE, reminder.type)
         contentValues.put(COLUMN_IMAGE, reminder.img)
-        contentValues.put(COLUMN_AMOUNT, reminder.amount)
-        contentValues.put(COLUMN_CAP_SIZE, reminder.capSize)
         contentValues.put(COLUMN_DAYS, reminder.reminderDays)
         contentValues.put(COLUMN_TIMES, reminder.reminderTimes)
-        contentValues.put(COLUMN_MEAL, reminder.foodAndPills)
         contentValues.put(COLUMN_SNOOZE_DURATION, reminder.snoozeDuration)
-        contentValues.put(COLUMN_SOUND, reminder.reminderSound)
         val id = db.insert(TABLE_NAME, null, contentValues) // Insert Row
         db.close() // Close database connection
 
@@ -107,13 +95,9 @@ class DataBaseHelper(
         contentValues.put(COLUMN_STATUS, reminder.status)
         contentValues.put(COLUMN_TYPE, reminder.type)
         contentValues.put(COLUMN_IMAGE, reminder.img)
-        contentValues.put(COLUMN_AMOUNT, reminder.amount)
-        contentValues.put(COLUMN_CAP_SIZE, reminder.capSize)
         contentValues.put(COLUMN_DAYS, reminder.reminderDays)
         contentValues.put(COLUMN_TIMES, reminder.reminderTimes)
-        contentValues.put(COLUMN_MEAL, reminder.foodAndPills)
         contentValues.put(COLUMN_SNOOZE_DURATION, reminder.snoozeDuration)
-        contentValues.put(COLUMN_SOUND, reminder.reminderSound)
 //        contentValues.put(COLUMN_TIMESTAMP, reminder.timestamp)
 
         val success = db.update(
@@ -159,13 +143,9 @@ class DataBaseHelper(
             cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS)),
             cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TYPE)),
             cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE)),
-            cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AMOUNT)),
-            cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CAP_SIZE)),
             cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAYS)),
             cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMES)),
-            cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEAL)),
             cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SNOOZE_DURATION)),
-            cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SOUND)),
             cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP))
         )
         cursor.close() // Close database connection
@@ -197,13 +177,9 @@ class DataBaseHelper(
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TYPE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AMOUNT)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CAP_SIZE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAYS)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMES)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEAL)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SNOOZE_DURATION)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SOUND)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP))
                     )
 
@@ -214,19 +190,12 @@ class DataBaseHelper(
                     reminder1.status = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
                     reminder1.type = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TYPE))
                     reminder1.img = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
-                    reminder1.amount = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AMOUNT))
-                    reminder1.capSize =
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CAP_SIZE))
                     reminder1.reminderDays =
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAYS))
                     reminder1.reminderTimes =
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMES))
-                    reminder1.foodAndPills =
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEAL))
                     reminder1.snoozeDuration =
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SNOOZE_DURATION))
-                    reminder1.reminderSound =
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SOUND))
                     reminder1.timestamp =
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP))
 
