@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +18,7 @@ import com.example.myhealthreminder.adapters.DaysAdapter
 import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.utils.DataBaseHelper
+import com.example.myhealthreminder.utils.convertTimeFormat
 
 class CreateActivity : AppCompatActivity() {
 
@@ -32,6 +32,10 @@ class CreateActivity : AppCompatActivity() {
     var isUpdate: Boolean = false
 
     lateinit var reminderData: ReminderModel
+    var reminderTime: String = ""
+
+
+//    lateinit var btnRemiderTime: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +68,8 @@ class CreateActivity : AppCompatActivity() {
 //            imageView.setImageResource(bundle.getInt("image"))
             cTitleInput.setText(reminderData.title)
             cDescriptionInput.setText(reminderData.description)
-
-            btnRemiderTime.text = reminderData.reminderTimes
+            reminderTime =  reminderData.reminderTimes
+            btnRemiderTime.text = convertTimeFormat(reminderTime)
         }
 
         supportActionBar!!.title =
@@ -78,22 +82,23 @@ class CreateActivity : AppCompatActivity() {
         daysRecyclerView()
 
         // Set click listener for the button
-        btnRemiderTime.setOnClickListener {
-//            Toast.makeText(this, "Pick Time", Toast.LENGTH_SHORT).show()
-            val cal = Calendar.getInstance()
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                btnRemiderTime.text = String.format("%02d:%02d", hour, minute)
+            btnRemiderTime.setOnClickListener {
+//                showTimePickerDialog()
+                val calendar = Calendar.getInstance()
+                val hour = calendar.get(Calendar.HOUR_OF_DAY)
+                val minute = calendar.get(Calendar.MINUTE)
+
+                val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
+
+                val timeSetListener = TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+                    val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
+//                    Toast.makeText(this, "Selected Time: $selectedTime", Toast.LENGTH_SHORT).show()
+                    reminderTime = selectedTime
+                    btnRemiderTime.text = convertTimeFormat(reminderTime)
+                }
+
+                TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
             }
-            TimePickerDialog(
-                this,
-                timeSetListener,
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
-                true
-            ).show()
-        }
 
         createBtn.setOnClickListener {
             // Get data from EditText
@@ -111,7 +116,7 @@ class CreateActivity : AppCompatActivity() {
                 btnRemiderTime.text.toString()
             }
 
-            val timepicker: String = btnRemiderTime.text.toString()
+            val timepicker: String = reminderTime
             // remove days from daysSelectedList if
             for (day in daysList) {
                 if (day.status) {
@@ -177,6 +182,57 @@ class CreateActivity : AppCompatActivity() {
             }
         }
     }
+
+//    fun convertTimeFormat(time: String, fromFormat: String= "HH:mm", toFormat: String= "hh:mm a"): String {
+//        val sdf = SimpleDateFormat(fromFormat)
+//        val date = sdf.parse(time)
+//        sdf.applyPattern(toFormat)
+//        return sdf.format(date)
+//    }
+
+//    fun displayTimeBasedOnUserSettings(selectedTime: String): String{
+//        val calendar = Calendar.getInstance()
+//        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+//        val minute = calendar.get(Calendar.MINUTE)
+//
+//        val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
+//        val formattedTime = if (is24HourFormat) {
+//            String.format("%02d:%02d", hour, minute)
+//        } else {
+//            val hourFormatted = if (hour == 0 || hour == 12) 12 else hour % 12
+//            val amPm = if (hour < 12) "AM" else "PM"
+//            String.format("%02d:%02d %s", hourFormatted, minute, amPm)
+//        }
+//        return formattedTime
+//    }
+
+    private fun showTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
+
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+            val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
+            Toast.makeText(this, "Selected Time: $selectedTime", Toast.LENGTH_SHORT).show()
+//            btnRemiderTime.text = String.format("%02d:%02d", hour, minute)
+        }
+
+        TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
+    }
+
+//    private fun displayTimeBasedOnUserSettings(tvSelectedTime: TextView, hour: Int, minute: Int) {
+//        val is24HourFormat = DateFormat.is24HourFormat(this)
+//        val formattedTime = if (is24HourFormat) {
+//            String.format("%02d:%02d", hour, minute)
+//        } else {
+//            val hourFormatted = if (hour == 0 || hour == 12) 12 else hour % 12
+//            val amPm = if (hour < 12) "AM" else "PM"
+//            String.format("%02d:%02d %s", hourFormatted, minute, amPm)
+//        }
+//        tvSelectedTime.text = "Selected Time: $formattedTime"
+//    }
 
     private fun daysRecyclerView() {
         // 1- RecyclerView

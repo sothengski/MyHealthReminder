@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.utils.DataBaseHelper
+import com.example.myhealthreminder.utils.convertTimeFormat
 
 class DetailActivity : AppCompatActivity() {
     private var TAG = "DetailActivity"
@@ -54,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
             imageView.setImageResource(bundle.getInt("image"))
             dTitle.text = (reminderData.title)
             dDescription.text = (reminderData.description)
-            dDay.text = (reminderData.reminderDays)
+            dDay.text = convertTimeFormat(reminderData.reminderDays)
             dTime.text = (reminderData.reminderTimes)
         }
 

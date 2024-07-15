@@ -140,7 +140,7 @@
         android:background="@drawable/button_bg"
         android:backgroundTint="@color/primaryLight"
         android:elevation="4dp"
-        android:text="Pick Time"
+        android:text="@string/pick_time"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
