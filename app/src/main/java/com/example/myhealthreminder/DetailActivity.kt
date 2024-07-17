@@ -59,7 +59,7 @@ class DetailActivity : AppCompatActivity() {
             dTime.text = (reminderData.reminderTimes)
         }
 
-        supportActionBar!!.title = "Detail ${reminderData.id}"
+        supportActionBar!!.title = "Detail" // ${if (reminderData.status == 1) "active" else "inactive"}
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
@@ -70,22 +70,49 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        val item = menu!!.findItem(R.id.menuStatus)
+        item.title = if (reminderData.status == 1) "Deactivate" else "Activate"
+
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menuEdit) {
-            val intent = Intent(this, CreateActivity::class.java).apply {
-                putExtra("reminderData", reminderData)
+        when (item.itemId) {
+            R.id.menuStatus -> {
+                switchStatus(reminderData)
+//                Toast.makeText(this, "Update Status", Toast.LENGTH_SHORT).show()
             }
-            this.startActivity(intent)
-//            Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show()
-        } else if (item.itemId == R.id.menuDelete) {
-            deleteConfirmation(reminderData)
-//            Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show()
-        } else
-            return super.onOptionsItemSelected(item)
+            R.id.menuEdit -> {
+                val intent = Intent(this, CreateActivity::class.java).apply {
+                    putExtra("reminderData", reminderData)
+                }
+                this.startActivity(intent)
+    //            Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show()
+            }
+            R.id.menuDelete -> {
+                deleteConfirmation(reminderData)
+    //            Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show()
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
         return true
+    }
+
+    private fun switchStatus(reminder: ReminderModel) {
+        val responseStatus =  dbHelper!!.updateReminderStatus(reminder)
+
+        if (responseStatus > 0) {
+            // get the updated reminder data from the database
+            val responseData = dbHelper!!.getReminder(reminder.id)
+//            Log.d(TAG, "responseData: $responseData")
+//            Log.d(TAG, "reminderData: $reminderData")
+
+            reminderData = responseData
+            // Update the menu item title to reflect the new status value (active or inactive) in the menu
+            invalidateOptionsMenu() // This will trigger the onCreateOptionsMenu method to be called again
+            Toast.makeText(this, "Status updated successfully", Toast.LENGTH_SHORT).show()
+
+        }
     }
 
     private fun deleteConfirmation(reminderData: ReminderModel) {

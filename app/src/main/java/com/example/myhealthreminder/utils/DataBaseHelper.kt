@@ -110,6 +110,21 @@ class DataBaseHelper(
         return success
     }
 
+    // update Reminder status by id
+    fun updateReminderStatus(reminder: ReminderModel): Int{
+        // Create and/or open a database that will be used for reading and writing.
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        // if status is 1, set it to 0 and vice versa for reminder status
+        contentValues.put(COLUMN_STATUS, if (reminder.status == 1) 0 else 1)
+        val whereClause = "$COLUMN_ID = ?"
+        val whereArgs = arrayOf(reminder.id.toString())
+       val success = db.update(TABLE_NAME, contentValues, whereClause, whereArgs)
+
+        db.close()
+        return success
+    }
+
     // delete a single reminder
     fun deleteReminder(reminder: ReminderModel): Int {
         val db =
@@ -202,7 +217,7 @@ class DataBaseHelper(
                     reminders.add(reminder1)
                 } while (cursor.moveToNext())
             }
-            Log.d("TAG", "getAllReminders: ${reminders.size}")
+//            Log.d("TAG", "getAllReminders: ${reminders.size}")
 //            db.setTransactionSuccessful()
             cursor.close()
             return reminders

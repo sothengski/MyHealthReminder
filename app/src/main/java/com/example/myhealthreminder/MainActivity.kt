@@ -1,19 +1,26 @@
 package com.example.myhealthreminder
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +34,7 @@ import com.example.myhealthreminder.utils.AlarmReceiver
 import com.example.myhealthreminder.utils.DataBaseHelper
 import com.example.myhealthreminder.utils.NotificationService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +52,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alarmManager: AlarmManager
     private lateinit var pendingIntent: PendingIntent
 
+    var permission: Array<String> = arrayOf(
+        "Manifest.permission.POST_NOTIFICATIONS",
+    )
+
+    var permissionPostNotification: Boolean = false;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +70,13 @@ class MainActivity : AppCompatActivity() {
         }
         // Notification Channel
 //        createNotificationChannel()
+
+//        if (!permissionPostNotification) {
+//            requestPermissionNotification()
+//        } else {
+//            Toast.makeText(this, "Notification Permission Granted.", Toast.LENGTH_SHORT).show()
+//        }
+
         val service = NotificationService(applicationContext)
 
         // enable the back button in the navigation bar
@@ -103,6 +124,76 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun requestPermissionNotification() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission[0]
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionPostNotification = true
+        } else {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                Toast.makeText(
+                    this,
+                    "Permission inside else first time don't allow",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permission inside else second time don't allow",
+                    Toast.LENGTH_SHORT
+                ).show()
+//                requestPermissionLauncherNotification.launch(permission[0])
+            }
+
+        }
+    }
+
+    private val requestPermissionLauncherNotification =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                permissionPostNotification = true
+                Toast.makeText(this, "Notification Permission Granted.", Toast.LENGTH_SHORT).show()
+            } else {
+                permissionPostNotification = false
+                Toast.makeText(this, "Notification Permission Denied.", Toast.LENGTH_SHORT).show()
+                showPermissionDialog("Notification Permission");
+//                Snackbar.make(
+//                    viewBinding.containermain,
+//                    String.format(
+//                        String.format(
+//                            getString(R.string.txt_error_post_notification),
+//                            getString(R.string.app_name)
+//                        )
+//                    ),
+//                    Snackbar.LENGTH_INDEFINITE
+//                ).setAction(getString(R.string.goto_settings)) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                        val settingsIntent: Intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+//                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                            .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+//                        startActivity(settingsIntent)
+//                    }
+//                }.show()
+            }
+        }
+
+    private fun showPermissionDialog(s: String) {
+        AlertDialog.Builder(this).setTitle("Alert for Permission")
+            .setPositiveButton("Go to Settings") { dialog, which ->
+                var rintent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                var uri = android.net.Uri.fromParts("package", packageName, null)
+                rintent.data = uri
+                startActivity(rintent)
+                dialog.dismiss()
+
+            }
+            .setNegativeButton("Exit") { dialog, which ->
+                dialog.dismiss()
+            }.show()
 
 
     }

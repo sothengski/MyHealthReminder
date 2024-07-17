@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menuEdit"
+        android:id="@+id/menuStatus"
         android:orderInCategory="1"
+        android:title="@string/active"
+        app:showAsAction="never"></item>
+
+    <item
+        android:id="@+id/menuEdit"
+        android:orderInCategory="2"
         android:title="@string/edit"
         app:showAsAction="never"></item>
 
     <item
         android:id="@+id/menuDelete"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/delete"
         app:showAsAction="never"></item>
 </menu>

@@ -6,6 +6,8 @@
     <string name="edit_reminder">Edit Reminder</string>
     <string name="delete">Delete</string>
     <string name="delete_reminder">Delete Reminder</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
 
     <string name="snooze_duration">Snooze Duration</string>
     <string name="minutes">Minutes</string>
