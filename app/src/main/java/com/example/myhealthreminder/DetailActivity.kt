@@ -55,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
             imageView.setImageResource(bundle.getInt("image"))
             dTitle.text = (reminderData.title)
             dDescription.text = (reminderData.description)
-            dDay.text = convertTimeFormat(reminderData.reminderDays)
+            dDay.text = (reminderData.reminderDays)
             dTime.text = (reminderData.reminderTimes)
         }
 

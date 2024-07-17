@@ -1,8 +1,17 @@
 package com.example.myhealthreminder
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,10 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.adapters.DaysAdapter
 import com.example.myhealthreminder.adapters.RemindersAdapter
+import com.example.myhealthreminder.models.AlarmItemModel
 import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
+import com.example.myhealthreminder.utils.AlarmReceiver
 import com.example.myhealthreminder.utils.DataBaseHelper
+import com.example.myhealthreminder.utils.NotificationService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
     private var TAG: String = "MainActivity"
@@ -27,6 +40,10 @@ class MainActivity : AppCompatActivity() {
     //    private var layoutManager: RecyclerView.LayoutManager? = null
     private var dbHelper: DataBaseHelper? = null
 
+    private lateinit var calendar: Calendar
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,26 +54,57 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Notification Channel
+//        createNotificationChannel()
+        val service = NotificationService(applicationContext)
+
         // enable the back button in the navigation bar
         supportActionBar!!.hide()
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
 
+        calendar = Calendar.getInstance()
+
+//        val scheduler = AndroidAlarmScheduler(this)
+//        var alarmItem: AlarmItemModel? = null
+
         // Get all reminders from DB
         getAllReminder()
 
         // Filter RecyclerView
         filterRecyclerView()
+        setAlarm()
 //        reminderRecyclerView()
+
+//        calendar.set(Calendar.HOUR_OF_DAY, 16)
+//        calendar.add(Calendar.MINUTE, 1)
+////        calendar.set(Calendar.MINUTE,LocalDateTime.now().plusSeconds(30).minute)
+//        calendar.set(Calendar.SECOND, 0)
+//        // print calendar time in hour:minute:second format
+//        println("get calendar time: ${calendar.time}")
+//        println("get calendar timeInMillis: ${calendar.timeInMillis}")
 
         // Floating Action Button
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
+            service.showNotification("My Notification")
+//            alarmItem?.let (scheduler::cancel)
+//            cancelAlarm()
+
+//            calendar.set(Calendar.HOUR_OF_DAY, 16)
+//            calendar.add(Calendar.MINUTE, 1)
+////            calendar.set(Calendar.MINUTE,LocalDateTime.now().plusSeconds(30).minute)
+//            calendar.set(Calendar.SECOND, 0)
+//            println("get calendar time: ${calendar.time}")
+//            println("get calendar timeInMillis: ${calendar.timeInMillis}")
+//            setAlarm()
             // Navigate to CreateActivity
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
+
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -114,4 +162,86 @@ class MainActivity : AppCompatActivity() {
         val adapter = DaysAdapter(filtersList)
         filterRecyclerView.adapter = adapter
     }
+
+
+    private fun setAlarm() {
+        val currentDateTime = LocalDateTime.now()
+        // get date
+        val date = currentDateTime.toLocalDate()
+        // get time
+//        val time = currentDateTime.toLocalTime()
+
+        var timeString = "${date}"
+
+        calendar.set(Calendar.HOUR_OF_DAY, 16)
+        calendar.add(Calendar.MINUTE, 1)
+        calendar.set(Calendar.SECOND, 0)
+
+//        println("get calendar time: ${calendar.time}")
+//        println("get calendar timeInMillis: ${calendar.timeInMillis}")
+
+        //add calendar time into timeString
+        timeString = "${date} ${calendar.time}"
+
+//        Log.d("timeString: ", timeString)
+        val scheduler = AndroidAlarmScheduler(this)
+        var alarmItem = AlarmItemModel(time = timeString, message = "My Alarm triggering now")
+        alarmItem?.let { scheduler.schedule(it) }
+
+//        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+//        val intent = Intent(this, AlarmReceiver::class.java)
+//
+//        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+//
+////        alarmManager.setRepeating(
+////            AlarmManager.RTC_WAKEUP,
+////            calendar.timeInMillis,
+////            AlarmManager.INTERVAL_DAY,
+////            pendingIntent
+////        )
+//        alarmManager.setExactAndAllowWhileIdle(
+//            AlarmManager.RTC_WAKEUP,
+//            calendar.timeInMillis,
+//            pendingIntent
+//        )
+//        println("set Alarm calendar time: ${calendar.timeInMillis}")
+
+        Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun cancelAlarm() {
+        val currentDateTime = LocalDateTime.now()
+        // get date
+        val date = currentDateTime.toLocalDate()
+        // get time
+//        val time = currentDateTime.toLocalTime()
+
+        var timeString = "${date}"
+
+        calendar.set(Calendar.HOUR_OF_DAY, 16)
+        calendar.add(Calendar.MINUTE, 1)
+        calendar.set(Calendar.SECOND, 0)
+
+//        println("get calendar time: ${calendar.time}")
+//        println("get calendar timeInMillis: ${calendar.timeInMillis}")
+
+        //add calendar time into timeString
+        timeString = "${date} ${calendar.time}"
+        val scheduler = AndroidAlarmScheduler(this)
+        var alarmItem = AlarmItemModel(time = timeString, message = "My Alarm triggering now")
+        alarmItem?.let { scheduler.cancel(it) }
+//        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+//        val intent = Intent(this, AlarmReceiver::class.java)
+//
+//        pendingIntent = PendingIntent.getBroadcast(
+//            this,
+//            0,
+//            intent,
+//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+//        )
+//        alarmManager.cancel(pendingIntent)
+//        pendingIntent.cancel()
+        Toast.makeText(this, "Alarm cancelled", Toast.LENGTH_SHORT).show()
+    }
+
 }
