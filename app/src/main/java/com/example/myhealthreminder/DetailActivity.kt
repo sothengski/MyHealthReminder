@@ -56,7 +56,7 @@ class DetailActivity : AppCompatActivity() {
             dTitle.text = (reminderData.title)
             dDescription.text = (reminderData.description)
             dDay.text = (reminderData.reminderDays)
-            dTime.text = (reminderData.reminderTimes)
+            dTime.text = convertTimeFormat(reminderData.reminderTimes)
         }
 
         supportActionBar!!.title = "Detail" // ${if (reminderData.status == 1) "active" else "inactive"}

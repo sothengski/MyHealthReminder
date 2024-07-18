@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(this, "Notification Permission Granted.", Toast.LENGTH_SHORT).show()
 //        }
 
-        val service = NotificationService(applicationContext)
+//        val service = NotificationService(applicationContext)
 
         // enable the back button in the navigation bar
         supportActionBar!!.hide()
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
         // Filter RecyclerView
         filterRecyclerView()
-        setAlarm()
+//        setAlarm()
 //        reminderRecyclerView()
 
 //        calendar.set(Calendar.HOUR_OF_DAY, 16)
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         // Floating Action Button
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
-            service.showNotification("My Notification")
+//            service.showNotification("My Notification")
 //            alarmItem?.let (scheduler::cancel)
 //            cancelAlarm()
 

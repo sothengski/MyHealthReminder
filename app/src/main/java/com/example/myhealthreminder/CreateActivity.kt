@@ -17,15 +17,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.adapters.DaysAdapter
 import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
+import com.example.myhealthreminder.models.dayList
 import com.example.myhealthreminder.utils.DataBaseHelper
 import com.example.myhealthreminder.utils.convertTimeFormat
+import com.example.myhealthreminder.utils.isDeviceIn24HourFormat
 
 class CreateActivity : AppCompatActivity() {
 
     private var TAG: String = "CreateActivity"
 
     private var dbHelper: DataBaseHelper? = null
-    var daysList: ArrayList<DayModel> = ArrayList()
+    var daysList: ArrayList<DayModel>? = null
 
     var daysSelected = ""
 
@@ -56,6 +58,13 @@ class CreateActivity : AppCompatActivity() {
         val btnRemiderTime: Button = findViewById(R.id.btnRemiderTime)
         val createBtn: Button = findViewById(R.id.cCreateBtn)
 
+        daysList = dayList
+
+        // for each day in daysList, set status to false
+        for (day in daysList!!) {
+            day.status = false
+        }
+
         // Get the data from the intent
         val intent = intent
         val bundle = intent.extras
@@ -68,37 +77,50 @@ class CreateActivity : AppCompatActivity() {
 //            imageView.setImageResource(bundle.getInt("image"))
             cTitleInput.setText(reminderData.title)
             cDescriptionInput.setText(reminderData.description)
-            reminderTime =  reminderData.reminderTimes
+            reminderTime = reminderData.reminderTimes
             btnRemiderTime.text = convertTimeFormat(reminderTime)
+            daysSelected = reminderData.reminderDays
+
+            // Set the days selected
+            for (day in daysList!!) {
+                if (daysSelected.contains(day.title)) {
+                    day.status = true
+//                    Log.d("TAG", "day: ${day.title} status: ${day.status}")
+                }
+            }
         }
 
-        supportActionBar!!.title =
+        // Edit or Create a Reminder Object based on the intent
+        var editOrAddTitle: String =
             if (isUpdate) getString(R.string.edit_reminder) else getString(R.string.add_reminder)
-        createBtn.text = if (isUpdate) "Edit Reminder ID: ${reminderData.id}" else "Add Reminder"
+
+        supportActionBar!!.title = editOrAddTitle
+        createBtn.text = editOrAddTitle
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
 
-        daysRecyclerView()
+        daysRecyclerView(daysList!!)
 
         // Set click listener for the button
-            btnRemiderTime.setOnClickListener {
+        btnRemiderTime.setOnClickListener {
 //                showTimePickerDialog()
-                val calendar = Calendar.getInstance()
-                val hour = calendar.get(Calendar.HOUR_OF_DAY)
-                val minute = calendar.get(Calendar.MINUTE)
+            val calendar = Calendar.getInstance()
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
 
-                val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
+            val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
 
-                val timeSetListener = TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+            val timeSetListener =
+                TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
                     val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
 //                    Toast.makeText(this, "Selected Time: $selectedTime", Toast.LENGTH_SHORT).show()
                     reminderTime = selectedTime
                     btnRemiderTime.text = convertTimeFormat(reminderTime)
                 }
 
-                TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
-            }
+            TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
+        }
 
         createBtn.setOnClickListener {
             // Get data from EditText
@@ -118,7 +140,7 @@ class CreateActivity : AppCompatActivity() {
 
             val timepicker: String = reminderTime
             // remove days from daysSelectedList if
-            for (day in daysList) {
+            for (day in daysList!!) {
                 if (day.status) {
 //                    Toast.makeText(this, "day: ${day.title}", Toast.LENGTH_SHORT).show()
                     daysSelectedList.add(day)
@@ -183,6 +205,7 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
+
 //    fun convertTimeFormat(time: String, fromFormat: String= "HH:mm", toFormat: String= "hh:mm a"): String {
 //        val sdf = SimpleDateFormat(fromFormat)
 //        val date = sdf.parse(time)
@@ -213,11 +236,12 @@ class CreateActivity : AppCompatActivity() {
 
         val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
 
-        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
-            val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
-            Toast.makeText(this, "Selected Time: $selectedTime", Toast.LENGTH_SHORT).show()
+        val timeSetListener =
+            TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
+                val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
+                Toast.makeText(this, "Selected Time: $selectedTime", Toast.LENGTH_SHORT).show()
 //            btnRemiderTime.text = String.format("%02d:%02d", hour, minute)
-        }
+            }
 
         TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
     }
@@ -234,31 +258,31 @@ class CreateActivity : AppCompatActivity() {
 //        tvSelectedTime.text = "Selected Time: $formattedTime"
 //    }
 
-    private fun daysRecyclerView() {
+    private fun daysRecyclerView(daysListData: ArrayList<DayModel>) {
         // 1- RecyclerView
         val daysRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
         daysRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // 2- Data source: List of ReminderModel Object
-        var filter1 = DayModel(1, "Mon", true)
-        var filter2 = DayModel(2, "Tue", false)
-        var filter3 = DayModel(3, "Wed", false)
-        var filter4 = DayModel(4, "Thu", false)
-        var filter5 = DayModel(5, "Fri", false)
-        var filter6 = DayModel(6, "Sat", false)
-        var filter7 = DayModel(7, "Sun", false)
-
-        daysList.add(filter1)
-        daysList.add(filter2)
-        daysList.add(filter3)
-        daysList.add(filter4)
-        daysList.add(filter5)
-        daysList.add(filter6)
-        daysList.add(filter7)
+//        var filter1 = DayModel(1, "Mon", true)
+//        var filter2 = DayModel(2, "Tue", false)
+//        var filter3 = DayModel(3, "Wed", false)
+//        var filter4 = DayModel(4, "Thu", false)
+//        var filter5 = DayModel(5, "Fri", false)
+//        var filter6 = DayModel(6, "Sat", false)
+//        var filter7 = DayModel(7, "Sun", false)
+//
+//        daysList.add(filter1)
+//        daysList.add(filter2)
+//        daysList.add(filter3)
+//        daysList.add(filter4)
+//        daysList.add(filter5)
+//        daysList.add(filter6)
+//        daysList.add(filter7)
 
         // 3- Adapter
-        val adapter = DaysAdapter(daysList)
+        val adapter = DaysAdapter(daysListData)
         daysRecyclerView.adapter = adapter
     }
 }

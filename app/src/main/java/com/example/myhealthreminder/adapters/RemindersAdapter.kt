@@ -1,5 +1,6 @@
 package com.example.myhealthreminder.adapters
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.DetailActivity
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.R
+import com.example.myhealthreminder.utils.convertTimeFormat
+import com.example.myhealthreminder.utils.isDeviceIn24HourFormat
 
 class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
     RecyclerView.Adapter<RemindersAdapter.MyViewHolder>() {
@@ -30,7 +33,9 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
             reminderImg.setImageResource(R.drawable.pill_symbol)
             reminderName.text = reminder.title
             reminderDays.text = reminder.reminderDays
-            reminderTimes.text = reminder.reminderTimes
+            reminderTimes.text = convertTimeFormat(
+                reminder.reminderTimes
+            )
             reminderStatus.text = if (reminder.status == 1) "Active" else "Inactive"
             reminderStatus.setTextColor(if (reminder.status == 1) Color.BLACK else Color.WHITE)
             reminderStatus.setBackgroundResource(if (reminder.status == 1) R.drawable.rounded_corner else R.drawable.rounded_corner_inactive)
