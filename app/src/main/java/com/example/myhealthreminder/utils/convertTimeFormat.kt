@@ -1,8 +1,8 @@
 package com.example.myhealthreminder.utils
 
 import android.content.Context
-import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.util.Calendar
 
 fun convertTimeFormat(
     time: String,
@@ -17,6 +17,16 @@ fun convertTimeFormat(
     val date = sdf.parse(time)
     sdf.applyPattern(toFormat)
     return sdf.format(date)
+}
+
+
+fun convertMillisToCurrentDayTime(millis: Long): String {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = millis
+
+    // Format the date and time as desired
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    return dateFormat.format(calendar.time)
 }
 
 fun isDeviceIn24HourFormat(context: Context): Boolean {

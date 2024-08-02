@@ -15,9 +15,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myhealthreminder.models.AlarmItemModel
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.utils.DataBaseHelper
+import com.example.myhealthreminder.utils.cancelAllAlarmTimes
 import com.example.myhealthreminder.utils.convertTimeFormat
+import com.example.myhealthreminder.utils.setAllAlarmTimes
 
 class DetailActivity : AppCompatActivity() {
     private var TAG = "DetailActivity"
@@ -48,7 +51,7 @@ class DetailActivity : AppCompatActivity() {
         // Get the data from the intent
         val intent = intent
         val bundle = intent.extras
-         reminderData = intent.getSerializableExtra("reminderData") as ReminderModel
+        reminderData = intent.getSerializableExtra("reminderData") as ReminderModel
 
         if (bundle != null) {
             // Get the data from the intent
@@ -59,7 +62,8 @@ class DetailActivity : AppCompatActivity() {
             dTime.text = convertTimeFormat(reminderData.reminderTimes)
         }
 
-        supportActionBar!!.title = "Detail" // ${if (reminderData.status == 1) "active" else "inactive"}
+        supportActionBar!!.title =
+            "Detail" // ${if (reminderData.status == 1) "active" else "inactive"}
 
         // Initialize DBHelper
         dbHelper = DataBaseHelper(this, null, null, 1)
@@ -72,7 +76,6 @@ class DetailActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         val item = menu!!.findItem(R.id.menuStatus)
         item.title = if (reminderData.status == 1) "Deactivate" else "Activate"
-
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -82,24 +85,27 @@ class DetailActivity : AppCompatActivity() {
                 switchStatus(reminderData)
 //                Toast.makeText(this, "Update Status", Toast.LENGTH_SHORT).show()
             }
+
             R.id.menuEdit -> {
                 val intent = Intent(this, CreateActivity::class.java).apply {
                     putExtra("reminderData", reminderData)
                 }
                 this.startActivity(intent)
-    //            Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show()
+                //            Toast.makeText(this, "Edit", Toast.LENGTH_SHORT).show()
             }
+
             R.id.menuDelete -> {
                 deleteConfirmation(reminderData)
-    //            Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show()
+                //            Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show()
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
 
     private fun switchStatus(reminder: ReminderModel) {
-        val responseStatus =  dbHelper!!.updateReminderStatus(reminder)
+        val responseStatus = dbHelper!!.updateReminderStatus(reminder)
 
         if (responseStatus > 0) {
             // get the updated reminder data from the database
@@ -108,6 +114,19 @@ class DetailActivity : AppCompatActivity() {
 //            Log.d(TAG, "reminderData: $reminderData")
 
             reminderData = responseData
+            // check if the status is 1 or 0 and cancel or schedule the alarm
+            val scheduler = AndroidAlarmScheduler(this)
+
+            if (reminderData.status == 1) {
+                // schedule the alarm
+                setAllAlarmTimes(this, reminderData)
+            }
+            else {
+                // Cancel the alarm
+                cancelAllAlarmTimes(this, reminderData)
+            }
+
+
             // Update the menu item title to reflect the new status value (active or inactive) in the menu
             invalidateOptionsMenu() // This will trigger the onCreateOptionsMenu method to be called again
             Toast.makeText(this, "Status updated successfully", Toast.LENGTH_SHORT).show()

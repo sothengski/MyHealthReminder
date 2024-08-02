@@ -15,12 +15,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.adapters.DaysAdapter
+import com.example.myhealthreminder.models.AlarmItemModel
 import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
 import com.example.myhealthreminder.models.dayList
 import com.example.myhealthreminder.utils.DataBaseHelper
+import com.example.myhealthreminder.utils.cancelAllAlarmTimes
 import com.example.myhealthreminder.utils.convertTimeFormat
 import com.example.myhealthreminder.utils.isDeviceIn24HourFormat
+import com.example.myhealthreminder.utils.setAllAlarmTimes
 
 class CreateActivity : AppCompatActivity() {
 
@@ -177,7 +180,9 @@ class CreateActivity : AppCompatActivity() {
                     val responseId: Int = dbHelper!!.updateReminder(reminderData)
 //                    Log.d("TAG", "responseId: ${responseId}")
                     if (responseId > 0) {
+                        cancelAllAlarmTimes(this, reminderData)
                         Toast.makeText(this, "Reminder Edit", Toast.LENGTH_SHORT).show()
+                        setAllAlarmTimes(this, reminderData)
                         // Pop
 //                        finish()
                         val intent = Intent(this, MainActivity::class.java)
@@ -192,9 +197,11 @@ class CreateActivity : AppCompatActivity() {
 
                     // Insert Reminder to DB
                     val responseId: Long = dbHelper!!.insertReminder(reminderData)
-
+                    reminderData.id = responseId.toInt()
                     if (responseId != -1L) {
                         Toast.makeText(this, "Reminder Created", Toast.LENGTH_SHORT).show()
+//                        setAlarm(reminderData)
+                        setAllAlarmTimes(this, reminderData)
                         // Pop
                         finish()
                     } else {
@@ -205,28 +212,27 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
-
-//    fun convertTimeFormat(time: String, fromFormat: String= "HH:mm", toFormat: String= "hh:mm a"): String {
-//        val sdf = SimpleDateFormat(fromFormat)
-//        val date = sdf.parse(time)
-//        sdf.applyPattern(toFormat)
-//        return sdf.format(date)
-//    }
-
-//    fun displayTimeBasedOnUserSettings(selectedTime: String): String{
-//        val calendar = Calendar.getInstance()
-//        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-//        val minute = calendar.get(Calendar.MINUTE)
+//    private fun setAlarm(reminderData: ReminderModel) {
 //
-//        val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
-//        val formattedTime = if (is24HourFormat) {
-//            String.format("%02d:%02d", hour, minute)
-//        } else {
-//            val hourFormatted = if (hour == 0 || hour == 12) 12 else hour % 12
-//            val amPm = if (hour < 12) "AM" else "PM"
-//            String.format("%02d:%02d %s", hourFormatted, minute, amPm)
+//        // val DayModel List of daysSelected
+//        val daysSelectedList: ArrayList<DayModel> = ArrayList()
+//        // add days to daysSelectedList if daysSelected is not empty and contains day.title
+//        for (day in daysList!!) {
+//            if (daysSelected.contains(day.title)) {
+//                daysSelectedList.add(day)
+//            }
 //        }
-//        return formattedTime
+//
+//        var alarmItem = AlarmItemModel(
+//            id = reminderData.id,
+//            daysOfWeek = daysSelectedList,
+//            time = reminderData.reminderTimes,
+//            message = "You have a reminder for ${reminderData.title} at ${reminderData.reminderTimes}"
+//        )
+//        Log.d(TAG, "alarm id: ${alarmItem.id}")
+//        setAllAlarmTimes(this, reminderData)
+//
+//        Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
 //    }
 
     private fun showTimePickerDialog() {
@@ -245,18 +251,6 @@ class CreateActivity : AppCompatActivity() {
 
         TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
     }
-
-//    private fun displayTimeBasedOnUserSettings(tvSelectedTime: TextView, hour: Int, minute: Int) {
-//        val is24HourFormat = DateFormat.is24HourFormat(this)
-//        val formattedTime = if (is24HourFormat) {
-//            String.format("%02d:%02d", hour, minute)
-//        } else {
-//            val hourFormatted = if (hour == 0 || hour == 12) 12 else hour % 12
-//            val amPm = if (hour < 12) "AM" else "PM"
-//            String.format("%02d:%02d %s", hourFormatted, minute, amPm)
-//        }
-//        tvSelectedTime.text = "Selected Time: $formattedTime"
-//    }
 
     private fun daysRecyclerView(daysListData: ArrayList<DayModel>) {
         // 1- RecyclerView

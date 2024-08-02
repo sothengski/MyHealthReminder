@@ -11,7 +11,8 @@ import com.example.myhealthreminder.R
 class NotificationService(
     private val context: Context,
 ) {
-    private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     fun showNotification(message: String) {
         val activityIntent = Intent(context, MainActivity::class.java)
@@ -32,13 +33,13 @@ class NotificationService(
         val notification = NotificationCompat.Builder(context, COUNTER_CHANNEL_ID)
             .setSmallIcon(R.drawable.baseline_health_and_safety_24)
             .setContentTitle("Pill Reminder")
-            .setContentText("You have a pill reminder")
+            .setContentText("${message}")
             .setContentIntent(activityPendingIntent)
-            .addAction(
-                R.drawable.baseline_health_and_safety_24,
-                "Remind me",
-                noticationIntent
-            )
+//            .addAction(
+//                R.drawable.baseline_health_and_safety_24,
+//                "Remind me",
+//                noticationIntent
+//            )
 //            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
@@ -49,6 +50,4 @@ class NotificationService(
     companion object {
         const val COUNTER_CHANNEL_ID = "counter_channel"
     }
-
-
 }

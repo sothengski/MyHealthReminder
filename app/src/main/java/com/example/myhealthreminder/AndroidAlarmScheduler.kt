@@ -8,6 +8,7 @@ import android.icu.util.Calendar
 import android.util.Log
 import com.example.myhealthreminder.models.AlarmItemModel
 import com.example.myhealthreminder.utils.AlarmReceiver
+import com.example.myhealthreminder.utils.convertMillisToCurrentDayTime
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -15,11 +16,13 @@ import java.time.format.DateTimeFormatter
 class AndroidAlarmScheduler(private val context: Context) : AlarmScheduler {
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
-    var timeString = "2024-07-16 15:35"
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm") // Adjust the pattern for your specific format
+//    var timeString = "2024-07-16 15:35"
+//    val formatter =
+//        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm") // Adjust the pattern for your specific format
 
-    override fun schedule(item: AlarmItemModel) {
-        val intent = Intent(context, AlarmReceiver::class.java).apply { putExtra("message", item.message) }
+    override fun schedule(item: AlarmItemModel, triggerTime: Long, alarmId: Int) {
+        val intent =
+            Intent(context, AlarmReceiver::class.java).apply { putExtra("message", item.message) }
         // get the current date and time
         val currentDateTime = LocalDateTime.now().plusSeconds(3)
 //        // get date
@@ -28,33 +31,41 @@ class AndroidAlarmScheduler(private val context: Context) : AlarmScheduler {
 //        val time = currentDateTime.toLocalTime()
 //
 //        timeString = "${date} ${item.time}"
-        Log.d("currentDateTime", currentDateTime.toString())
+//        Log.d("currentDateTime", currentDateTime.toString())
 
 //        val dateTime = LocalDateTime.parse(timeString, formatter)
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            currentDateTime.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
-//            item.time.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000,
+            triggerTime,
             PendingIntent.getBroadcast(
                 context,
-                item.hashCode(),
+                item.id,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
-        Log.d("AndroidAlarmScheduler: ", "schedule")
+        Log.d(
+            "AndroidAlarmScheduler",
+            "Alarm scheduled for ID: ${item.id}, Trigger Time: $triggerTime: ${
+                convertMillisToCurrentDayTime(triggerTime)
+            }"
+        )
     }
 
     override fun cancel(item: AlarmItemModel) {
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                item.hashCode(),
-                Intent(context, AlarmReceiver::class.java).apply { putExtra("message", item.message) },
+                item.id,
+                Intent(context, AlarmReceiver::class.java).apply {
+                    putExtra(
+                        "message",
+                        item.message
+                    )
+                },
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
-        Log.d("AndroidAlarmScheduler: ", "cancelled")
-
+        Log.d("AndroidAlarmScheduler", "Alarm cancel for ID: ${item.id}")
     }
 }
