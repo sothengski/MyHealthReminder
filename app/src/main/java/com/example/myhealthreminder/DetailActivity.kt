@@ -15,8 +15,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.myhealthreminder.models.AlarmItemModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myhealthreminder.adapters.DaysAdapter
+import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.models.ReminderModel
+import com.example.myhealthreminder.models.dayList
 import com.example.myhealthreminder.utils.DataBaseHelper
 import com.example.myhealthreminder.utils.cancelAllAlarmTimes
 import com.example.myhealthreminder.utils.convertTimeFormat
@@ -26,6 +30,9 @@ class DetailActivity : AppCompatActivity() {
     private var TAG = "DetailActivity"
     private var dbHelper: DataBaseHelper? = null
     lateinit var reminderData: ReminderModel
+
+    var daysList: ArrayList<DayModel>? = null
+    var daysSelected = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +51,16 @@ class DetailActivity : AppCompatActivity() {
         val imageView: ImageView = findViewById(R.id.imageView)
         val dTitle: TextView = findViewById(R.id.dTitle)
         val dDescription: TextView = findViewById(R.id.dDescriptionData)
-        val dDay: TextView = findViewById(R.id.dDayData)
-        val dTime: TextView = findViewById(R.id.dTimeData)
+//        val dDay: TextView = findViewById(R.id.dDayData)
+//        val dTime: TextView = findViewById(R.id.dTimeData)
+        val btnRemiderTime: Button = findViewById(R.id.btnRemiderTime)
         val dDeleteBtn: Button = findViewById(R.id.dDeleteBtn)
+
+        daysList = dayList
+        // for each day in daysList, set status to false
+        for (day in daysList!!) {
+            day.status = false
+        }
 
         // Get the data from the intent
         val intent = intent
@@ -58,9 +72,21 @@ class DetailActivity : AppCompatActivity() {
             imageView.setImageResource(bundle.getInt("image"))
             dTitle.text = (reminderData.title)
             dDescription.text = (reminderData.description)
-            dDay.text = (reminderData.reminderDays)
-            dTime.text = convertTimeFormat(reminderData.reminderTimes)
+//            dDay.text = (reminderData.reminderDays)
+            daysSelected = reminderData.reminderDays
+//            dTime.text = convertTimeFormat(reminderData.reminderTimes)
+            btnRemiderTime.text = convertTimeFormat(reminderData.reminderTimes)
+
+            // Set the days selected
+            for (day in daysList!!) {
+                if (daysSelected.contains(day.title)) {
+                    day.status = true
+//                    Log.d("TAG", "day: ${day.title} status: ${day.status}")
+                }
+            }
         }
+        // disable reminder time button
+        btnRemiderTime.isClickable = false
 
         supportActionBar!!.title =
             "Detail" // ${if (reminderData.status == 1) "active" else "inactive"}
@@ -70,6 +96,37 @@ class DetailActivity : AppCompatActivity() {
         dDeleteBtn.setOnClickListener {
             deleteConfirmation(reminderData)
         }
+        daysRecyclerView(daysList!!)
+    }
+
+    private fun daysRecyclerView(daysListData: ArrayList<DayModel>) {
+        // 1- RecyclerView
+        val daysRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
+        daysRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+
+        // 2- Data source: List of ReminderModel Object
+//        var filter1 = DayModel(1, "Mon", true)
+//        var filter2 = DayModel(2, "Tue", false)
+//        var filter3 = DayModel(3, "Wed", false)
+//        var filter4 = DayModel(4, "Thu", false)
+//        var filter5 = DayModel(5, "Fri", false)
+//        var filter6 = DayModel(6, "Sat", false)
+//        var filter7 = DayModel(7, "Sun", false)
+//
+//        daysList.add(filter1)
+//        daysList.add(filter2)
+//        daysList.add(filter3)
+//        daysList.add(filter4)
+//        daysList.add(filter5)
+//        daysList.add(filter6)
+//        daysList.add(filter7)
+
+        // 3- Adapter
+        val adapter = DaysAdapter(daysListData, false)
+        daysRecyclerView.adapter = adapter
+        // disable click on the recycler view
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -120,17 +177,14 @@ class DetailActivity : AppCompatActivity() {
             if (reminderData.status == 1) {
                 // schedule the alarm
                 setAllAlarmTimes(this, reminderData)
-            }
-            else {
+            } else {
                 // Cancel the alarm
                 cancelAllAlarmTimes(this, reminderData)
             }
 
-
             // Update the menu item title to reflect the new status value (active or inactive) in the menu
             invalidateOptionsMenu() // This will trigger the onCreateOptionsMenu method to be called again
             Toast.makeText(this, "Status updated successfully", Toast.LENGTH_SHORT).show()
-
         }
     }
 

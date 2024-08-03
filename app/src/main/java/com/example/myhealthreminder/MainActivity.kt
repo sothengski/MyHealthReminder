@@ -40,14 +40,14 @@ class MainActivity : AppCompatActivity() {
     private var dbHelper: DataBaseHelper? = null
 
     private lateinit var calendar: Calendar
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
+//    private lateinit var alarmManager: AlarmManager
+//    private lateinit var pendingIntent: PendingIntent
 
-    var permission: Array<String> = arrayOf(
-        "Manifest.permission.POST_NOTIFICATIONS",
-    )
-
-    var permissionPostNotification: Boolean = false;
+//    var permission: Array<String> = arrayOf(
+//        "Manifest.permission.POST_NOTIFICATIONS",
+//    )
+//
+//    var permissionPostNotification: Boolean = false;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
 
         calendar = Calendar.getInstance()
 
-        val scheduler = AndroidAlarmScheduler(this)
-        var alarmItem: AlarmItemModel? = null
+//        val scheduler = AndroidAlarmScheduler(this)
+//        var alarmItem: AlarmItemModel? = null
 
         // Get all reminders from DB
         getAllReminder()
@@ -97,77 +97,73 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestPermissionNotification() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                permission[0]
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionPostNotification = true
-        } else {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                Toast.makeText(
-                    this,
-                    "Permission inside else first time don't allow",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Permission inside else second time don't allow",
-                    Toast.LENGTH_SHORT
-                ).show()
-//                requestPermissionLauncherNotification.launch(permission[0])
-            }
+//    private fun requestPermissionNotification() {
+//        if (ContextCompat.checkSelfPermission(
+//                this,
+//                permission[0]
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            permissionPostNotification = true
+//        } else {
+//            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+//                Toast.makeText(
+//                    this,
+//                    "Permission inside else first time don't allow",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else {
+//                Toast.makeText(
+//                    this,
+//                    "Permission inside else second time don't allow",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+////                requestPermissionLauncherNotification.launch(permission[0])
+//            }
+//        }
+//    }
 
-        }
-    }
+//    private val requestPermissionLauncherNotification =
+//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+//            if (isGranted) {
+//                permissionPostNotification = true
+//                Toast.makeText(this, "Notification Permission Granted.", Toast.LENGTH_SHORT).show()
+//            } else {
+//                permissionPostNotification = false
+//                Toast.makeText(this, "Notification Permission Denied.", Toast.LENGTH_SHORT).show()
+//                showPermissionDialog("Notification Permission");
+////                Snackbar.make(
+////                    viewBinding.containermain,
+////                    String.format(
+////                        String.format(
+////                            getString(R.string.txt_error_post_notification),
+////                            getString(R.string.app_name)
+////                        )
+////                    ),
+////                    Snackbar.LENGTH_INDEFINITE
+////                ).setAction(getString(R.string.goto_settings)) {
+////                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+////                        val settingsIntent: Intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+////                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+////                            .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+////                        startActivity(settingsIntent)
+////                    }
+////                }.show()
+//            }
+//        }
 
-    private val requestPermissionLauncherNotification =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                permissionPostNotification = true
-                Toast.makeText(this, "Notification Permission Granted.", Toast.LENGTH_SHORT).show()
-            } else {
-                permissionPostNotification = false
-                Toast.makeText(this, "Notification Permission Denied.", Toast.LENGTH_SHORT).show()
-                showPermissionDialog("Notification Permission");
-//                Snackbar.make(
-//                    viewBinding.containermain,
-//                    String.format(
-//                        String.format(
-//                            getString(R.string.txt_error_post_notification),
-//                            getString(R.string.app_name)
-//                        )
-//                    ),
-//                    Snackbar.LENGTH_INDEFINITE
-//                ).setAction(getString(R.string.goto_settings)) {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                        val settingsIntent: Intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-//                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                            .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-//                        startActivity(settingsIntent)
-//                    }
-//                }.show()
-            }
-        }
-
-    private fun showPermissionDialog(s: String) {
-        AlertDialog.Builder(this).setTitle("Alert for Permission")
-            .setPositiveButton("Go to Settings") { dialog, which ->
-                var rintent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                var uri = android.net.Uri.fromParts("package", packageName, null)
-                rintent.data = uri
-                startActivity(rintent)
-                dialog.dismiss()
-
-            }
-            .setNegativeButton("Exit") { dialog, which ->
-                dialog.dismiss()
-            }.show()
-
-
-    }
+//    private fun showPermissionDialog(s: String) {
+//        AlertDialog.Builder(this).setTitle("Alert for Permission")
+//            .setPositiveButton("Go to Settings") { dialog, which ->
+//                var rintent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//                var uri = android.net.Uri.fromParts("package", packageName, null)
+//                rintent.data = uri
+//                startActivity(rintent)
+//                dialog.dismiss()
+//            }
+//            .setNegativeButton("Exit") { dialog, which ->
+//                dialog.dismiss()
+//            }.show()
+//    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
@@ -194,34 +190,34 @@ class MainActivity : AppCompatActivity() {
         recyclerView!!.adapter = myAdapter // Set Adapter
     }
 
-    private fun filterRecyclerView() {
-        // 1- RecyclerView
-        val filterRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
-        filterRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        // 2- Data source: List of ReminderModel Objects
-        val filtersList: ArrayList<DayModel> = ArrayList()
-
-        val filter1 = DayModel(1, "Mon", true)
-        val filter2 = DayModel(2, "Tue", false)
-        val filter3 = DayModel(3, "Wed", false)
-        val filter4 = DayModel(4, "Thu", false)
-        val filter5 = DayModel(5, "Fri", false)
-        val filter6 = DayModel(6, "Sat", false)
-        val filter7 = DayModel(7, "Sun", false)
-
-
-        filtersList.add(filter1)
-        filtersList.add(filter2)
-        filtersList.add(filter3)
-        filtersList.add(filter4)
-        filtersList.add(filter5)
-        filtersList.add(filter6)
-        filtersList.add(filter7)
-
-        // 3- Adapter
-        val adapter = DaysAdapter(filtersList)
-        filterRecyclerView.adapter = adapter
-    }
+//    private fun filterRecyclerView() {
+//        // 1- RecyclerView
+//        val filterRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
+//        filterRecyclerView.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//
+//        // 2- Data source: List of ReminderModel Objects
+//        val filtersList: ArrayList<DayModel> = ArrayList()
+//
+//        val filter1 = DayModel(1, "Mon", true)
+//        val filter2 = DayModel(2, "Tue", false)
+//        val filter3 = DayModel(3, "Wed", false)
+//        val filter4 = DayModel(4, "Thu", false)
+//        val filter5 = DayModel(5, "Fri", false)
+//        val filter6 = DayModel(6, "Sat", false)
+//        val filter7 = DayModel(7, "Sun", false)
+//
+//
+//        filtersList.add(filter1)
+//        filtersList.add(filter2)
+//        filtersList.add(filter3)
+//        filtersList.add(filter4)
+//        filtersList.add(filter5)
+//        filtersList.add(filter6)
+//        filtersList.add(filter7)
+//
+//        // 3- Adapter
+//        val adapter = DaysAdapter(filtersList)
+//        filterRecyclerView.adapter = adapter
+//    }
 }

@@ -129,7 +129,7 @@ class CreateActivity : AppCompatActivity() {
             // Get data from EditText
             val title = cTitleInput.text.toString()
             val description = cDescriptionInput.text.toString()
-            val status = 1
+            val status = if (isUpdate) reminderData.status else 1
             // arrayList of DayModel Object
             val daysSelectedList: ArrayList<DayModel> = ArrayList()
             // if timepicker is empty and difference from TimeFormat, set it to ""

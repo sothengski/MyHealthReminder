@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myhealthreminder.models.DayModel
 import com.example.myhealthreminder.R
 
-class DaysAdapter(private val daysList: ArrayList<DayModel>) :
+class DaysAdapter(
+    private val daysList: ArrayList<DayModel>,
+    private val isClickable: Boolean = true
+) :
     RecyclerView.Adapter<DaysAdapter.MyViewHolder>() {
     // ViewHolder: Holds references to the views within each item in the recyclerView
     private var listener: OnItemClickListener? = null
@@ -35,21 +38,27 @@ class DaysAdapter(private val daysList: ArrayList<DayModel>) :
         val filterData: DayModel = daysList[position]
         holder.bindItems(filterData)
 
-        // Set click listener for the card view
-        holder.itemView.setOnClickListener {
+        if (!isClickable) {
+            holder.itemView.setOnClickListener(null)
+        } else {
+            // Set click listener for the card view
+            holder.itemView.setOnClickListener {
 //            Toast.makeText(
 //                holder.itemView.context,
 //                "You Clicked: ${filterData.title}",
 //                Toast.LENGTH_SHORT
 //            ).show()
-            // Handle the click event here
-            filterData.status = !filterData.status
-            notifyDataSetChanged()
+                // Handle the click event here
+                filterData.status = !filterData.status
+                notifyDataSetChanged()
 
 //            if (listener != null) {
 //                listener!!.onItemClick(filterData, position)
 //            }
+            }
         }
+
+
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".DetailActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -30,7 +29,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:text="Title"
-            android:textColor="@color/black"
+            android:textColor="@color/primary"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:text="@string/days"
             android:textColor="@color/gray"
             android:textSize="18sp"
@@ -49,66 +48,95 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dTitle" />
 
-        <TextView
-            android:id="@+id/dDayData"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_filter"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_margin="8dp"
+            android:layout_marginTop="260dp"
+            android:nestedScrollingEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dDayLabel" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/dDayData"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="16dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:text=""-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="24sp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/dDayLabel" />-->
 
         <TextView
             android:id="@+id/dTimeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="76dp"
+            android:layout_marginTop="34dp"
             android:text="@string/time"
             android:textColor="@color/gray"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dDayLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView_filter" />
 
-        <TextView
-            android:id="@+id/dTimeData"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="76dp"
-            android:text=""
+        <Button
+            android:id="@+id/btnRemiderTime"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_bg"
+            android:backgroundTint="@color/primaryLight"
+            android:elevation="4dp"
+            android:text="@string/pick_time"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dDayLabel" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dTimeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView_filter" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/dTimeData"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="56dp"-->
+        <!--            android:layout_marginStart="76dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:text=""-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="24sp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/dTimeLabel" />-->
 
         <TextView
             android:id="@+id/dDescriptionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="216dp"
+            android:layout_marginTop="24dp"
             android:text="Description"
             android:textColor="@color/gray"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/btnRemiderTime" />
 
         <TextView
             android:id="@+id/dDescriptionData"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/darkGray"
             android:textSize="20sp"
-            android:textStyle="bold"
+            android:textStyle="normal|italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dDescriptionLabel" />
