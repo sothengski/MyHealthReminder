@@ -10,6 +10,8 @@ import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 //    )
 //
 //    var permissionPostNotification: Boolean = false;
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,6 +177,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAllReminder() {
         recyclerView = findViewById(R.id.recyclerView)
+        val noDataText = findViewById<TextView>(R.id.noDataText)
 
         // Get all reminders from DB
         remindersList = dbHelper!!.getAllReminders() as ArrayList<ReminderModel>
@@ -188,6 +190,14 @@ class MainActivity : AppCompatActivity() {
         recyclerView!!.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView!!.adapter = myAdapter // Set Adapter
+        // Check for data and update visibility
+        if (myAdapter!!.hasData()) {
+            recyclerView!!.visibility = View.VISIBLE
+            noDataText.visibility = View.GONE
+        } else {
+            recyclerView!!.visibility = View.GONE
+            noDataText.visibility = View.VISIBLE
+        }
     }
 
 //    private fun filterRecyclerView() {
