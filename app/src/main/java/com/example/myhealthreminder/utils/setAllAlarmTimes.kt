@@ -58,8 +58,9 @@ fun setAllAlarmTimes(context: Context, reminderData: ReminderModel) {
         }
     }
 }
+
 fun cancelAllAlarmTimes(context: Context, reminderData: ReminderModel) {
-   var alarmItem = AlarmItemModel(
+    var alarmItem = AlarmItemModel(
         id = reminderData.id,
         time = reminderData.reminderTimes,
         message = "You cancel a reminder for ${reminderData.title} at ${reminderData.reminderTimes}"

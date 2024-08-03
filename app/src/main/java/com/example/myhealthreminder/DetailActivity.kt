@@ -107,21 +107,6 @@ class DetailActivity : AppCompatActivity() {
 
 
         // 2- Data source: List of ReminderModel Object
-//        var filter1 = DayModel(1, "Mon", true)
-//        var filter2 = DayModel(2, "Tue", false)
-//        var filter3 = DayModel(3, "Wed", false)
-//        var filter4 = DayModel(4, "Thu", false)
-//        var filter5 = DayModel(5, "Fri", false)
-//        var filter6 = DayModel(6, "Sat", false)
-//        var filter7 = DayModel(7, "Sun", false)
-//
-//        daysList.add(filter1)
-//        daysList.add(filter2)
-//        daysList.add(filter3)
-//        daysList.add(filter4)
-//        daysList.add(filter5)
-//        daysList.add(filter6)
-//        daysList.add(filter7)
 
         // 3- Adapter
         val adapter = DaysAdapter(daysListData, false)

@@ -14,4 +14,3 @@ data class ReminderModel(
     var snoozeDuration: Int = 0,
     var timestamp: String = ""
 ) : Serializable
-

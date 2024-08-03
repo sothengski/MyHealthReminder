@@ -57,8 +57,6 @@ class DaysAdapter(
 //            }
             }
         }
-
-
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

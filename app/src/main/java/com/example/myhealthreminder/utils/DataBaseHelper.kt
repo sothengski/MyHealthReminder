@@ -111,7 +111,7 @@ class DataBaseHelper(
     }
 
     // update Reminder status by id
-    fun updateReminderStatus(reminder: ReminderModel): Int{
+    fun updateReminderStatus(reminder: ReminderModel): Int {
         // Create and/or open a database that will be used for reading and writing.
         val db = this.writableDatabase
         val contentValues = ContentValues()
@@ -119,7 +119,7 @@ class DataBaseHelper(
         contentValues.put(COLUMN_STATUS, if (reminder.status == 1) 0 else 1)
         val whereClause = "$COLUMN_ID = ?"
         val whereArgs = arrayOf(reminder.id.toString())
-       val success = db.update(TABLE_NAME, contentValues, whereClause, whereArgs)
+        val success = db.update(TABLE_NAME, contentValues, whereClause, whereArgs)
 
         db.close()
         return success

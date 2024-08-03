@@ -11,7 +11,7 @@ fun convertTimeFormat(
     is24h: Boolean = true
 ): String {
     val fromFormat = if (is24h) "HH:mm" else "hh:mm a" // 13:15 -> 1:15 PM
-    val toFormat =if (is24h) "hh:mm a" else "HH:mm" // 1:15 PM -> 13:15
+    val toFormat = if (is24h) "hh:mm a" else "HH:mm" // 1:15 PM -> 13:15
 
     val sdf = SimpleDateFormat(fromFormat)
     val date = sdf.parse(time)

@@ -78,11 +78,11 @@ class RemindersAdapter(val remindersList: ArrayList<ReminderModel>) :
         onItemClickListener = listener
 //        Log.d("TAG", "clickListener: ")
     }
+
     // Adapter or ViewModel
     val remindersData: List<ReminderModel> = remindersList // Your data list
 
     fun hasData(): Boolean {
         return remindersData.isNotEmpty()
     }
-
 }

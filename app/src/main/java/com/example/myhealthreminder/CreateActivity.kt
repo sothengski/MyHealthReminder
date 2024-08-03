@@ -26,7 +26,6 @@ import com.example.myhealthreminder.utils.isDeviceIn24HourFormat
 import com.example.myhealthreminder.utils.setAllAlarmTimes
 
 class CreateActivity : AppCompatActivity() {
-
     private var TAG: String = "CreateActivity"
 
     private var dbHelper: DataBaseHelper? = null
@@ -38,9 +37,6 @@ class CreateActivity : AppCompatActivity() {
 
     lateinit var reminderData: ReminderModel
     var reminderTime: String = ""
-
-
-//    lateinit var btnRemiderTime: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -212,46 +208,6 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
-//    private fun setAlarm(reminderData: ReminderModel) {
-//
-//        // val DayModel List of daysSelected
-//        val daysSelectedList: ArrayList<DayModel> = ArrayList()
-//        // add days to daysSelectedList if daysSelected is not empty and contains day.title
-//        for (day in daysList!!) {
-//            if (daysSelected.contains(day.title)) {
-//                daysSelectedList.add(day)
-//            }
-//        }
-//
-//        var alarmItem = AlarmItemModel(
-//            id = reminderData.id,
-//            daysOfWeek = daysSelectedList,
-//            time = reminderData.reminderTimes,
-//            message = "You have a reminder for ${reminderData.title} at ${reminderData.reminderTimes}"
-//        )
-//        Log.d(TAG, "alarm id: ${alarmItem.id}")
-//        setAllAlarmTimes(this, reminderData)
-//
-//        Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
-//    }
-
-    private fun showTimePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
-
-        val is24HourFormat = android.text.format.DateFormat.is24HourFormat(this)
-
-        val timeSetListener =
-            TimePickerDialog.OnTimeSetListener { _, selectedHour, selectedMinute ->
-                val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
-                Toast.makeText(this, "Selected Time: $selectedTime", Toast.LENGTH_SHORT).show()
-//            btnRemiderTime.text = String.format("%02d:%02d", hour, minute)
-            }
-
-        TimePickerDialog(this, timeSetListener, hour, minute, is24HourFormat).show()
-    }
-
     private fun daysRecyclerView(daysListData: ArrayList<DayModel>) {
         // 1- RecyclerView
         val daysRecyclerView: RecyclerView = findViewById(R.id.recyclerView_filter)
@@ -259,21 +215,6 @@ class CreateActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // 2- Data source: List of ReminderModel Object
-//        var filter1 = DayModel(1, "Mon", true)
-//        var filter2 = DayModel(2, "Tue", false)
-//        var filter3 = DayModel(3, "Wed", false)
-//        var filter4 = DayModel(4, "Thu", false)
-//        var filter5 = DayModel(5, "Fri", false)
-//        var filter6 = DayModel(6, "Sat", false)
-//        var filter7 = DayModel(7, "Sun", false)
-//
-//        daysList.add(filter1)
-//        daysList.add(filter2)
-//        daysList.add(filter3)
-//        daysList.add(filter4)
-//        daysList.add(filter5)
-//        daysList.add(filter6)
-//        daysList.add(filter7)
 
         // 3- Adapter
         val adapter = DaysAdapter(daysListData)

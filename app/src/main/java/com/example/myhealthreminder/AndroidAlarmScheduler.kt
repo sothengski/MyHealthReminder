@@ -29,11 +29,7 @@ class AndroidAlarmScheduler(private val context: Context) : AlarmScheduler {
 //        val date = currentDateTime.toLocalDate()
 //        // get time
 //        val time = currentDateTime.toLocalTime()
-//
-//        timeString = "${date} ${item.time}"
-//        Log.d("currentDateTime", currentDateTime.toString())
 
-//        val dateTime = LocalDateTime.parse(timeString, formatter)
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             triggerTime,
