@@ -183,6 +183,7 @@ class DetailActivity : AppCompatActivity() {
         alertDialog.setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
             val responseStatus = dbHelper!!.deleteReminder(reminderData)
             if (responseStatus > 0) {
+                cancelAllAlarmTimes(this, reminderData)
 //                Log.d(TAG, "deleteConfirmation: $responseStatus")
                 finish()
             }
